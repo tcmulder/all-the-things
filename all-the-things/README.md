@@ -21,6 +21,10 @@ Creates a pattern library where one can develope features in isolation separate 
 
 == Changelog ==
 
+= 1.0.1 =
+
+-   Refactor code to make adjustments easier (via constants at the top of the main plugin file).
+
 = 1.0.0 =
 
 -   Officially added repo for plugin (though I've been using this already for years).

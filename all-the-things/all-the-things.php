@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pattern Library
 Description: Adds a basic pattern library to your WordPress site.
-Version:     1.0.0
+Version:     1.0.1
 Author:      Tomas Mulder
 Author URI:  https://www.thinkaquamarine.com
 License:     GPL2

@@ -11,18 +11,26 @@ Text Domain: aqua-pattern-library
 Domain Path: /languages
 */
 
-// exit if accessed directly
+/**
+ * Exit if accessed directly
+ */
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Define constants
+ */
 define( 'AQUA_PATTERNS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AQUA_PATTERNS_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 
-/*------------------------------------*\
-    ::All the Things
-\*------------------------------------*/
-// custom post type
+/**
+ * Check if localhost or other authorized server
+ */
+
+/**
+ * Create All the Things CPT
+ */
 add_action('init', 'aqua_patterns_create_all_the_things');
 function aqua_patterns_create_all_the_things() {
     register_post_type('all-the-things',
@@ -60,7 +68,9 @@ function aqua_patterns_create_all_the_things() {
     );
 }
 
-// redirect non-logged-in users to login page
+/**
+ * Redirect non-logged-in users to login page
+ */
 add_action('template_redirect', 'aqua_patterns_redirect_to_specific_page');
 function aqua_patterns_redirect_to_specific_page() {
     if(
@@ -76,8 +86,9 @@ function aqua_patterns_redirect_to_specific_page() {
 /*------------------------------------*\
     ::Create Custom Templates
 \*------------------------------------*/
-add_filter('single_template', 'aqua_patterns_custom_single_template');
+
 // create the single page
+add_filter('single_template', 'aqua_patterns_custom_single_template');
 function aqua_patterns_custom_single_template($single_template) {
     global $post;
     if ($post->post_type === 'all-the-things') {
@@ -111,6 +122,7 @@ function aqua_patterns_custom_archive_template($archive_template) {
 \*------------------------------------*/
 add_shortcode('pagelist', 'aqua_patterns_page_list_shortcode');
 function aqua_patterns_page_list_shortcode($attr) {
+    
     // get attributes
     extract(shortcode_atts(array(
         'fixed' => '',
@@ -122,13 +134,16 @@ function aqua_patterns_page_list_shortcode($attr) {
         'orderby'           => 'title',
         'order'             => 'ASC',
     );
+    
     // create random number to disambiguate
     $r = rand();
+    
     // loop through all the things
     $page_id = get_the_id();
     $the_query = new WP_Query($args);
     $list = '';
     if ($the_query->have_posts()) {
+        
         // add all the things to a list with links
         $list .= '<ul>';
         while ($the_query->have_posts()) {
@@ -153,10 +168,13 @@ function aqua_patterns_page_list_shortcode($attr) {
     $mods = '';
     $form_style = '';
     if($mods_id){
+        
         // get the mods
         $group = acf_get_fields_by_id($mods_id);
+        
         // create list
         if($group){
+        
             // create styling
             $form_style = '
                 <style scoped>
@@ -189,6 +207,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                     }
                 </style>
             ';
+            
             // create behavior
             $script = '
                 <script>
@@ -243,6 +262,7 @@ function aqua_patterns_page_list_shortcode($attr) {
 
     // if we got a list of all the things
     if($list) {
+        
         // establish optional fixed position styling
         if($fixed != ''){
             $fixed_arr = explode('-', $fixed);
@@ -274,6 +294,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                 }
             ';
         }
+        
         // establish normal styling
         $list_style = '
         <style scoped>
@@ -328,8 +349,6 @@ function aqua_patterns_page_list_shortcode($attr) {
                 '.$fixed.'
         </style>';
 
-
-
         // create the list
         $str =  '
             <ul id="things-list-'.$r.'">
@@ -346,7 +365,7 @@ function aqua_patterns_page_list_shortcode($attr) {
     }
 }
 
-// show the page list (just pass ?no-things as a query string to not load)
+// show the page list
 add_action( 'wp_footer', 'aqua_patterns_page_list_in_footer', 50 );
 function aqua_patterns_page_list_in_footer(){
     if(

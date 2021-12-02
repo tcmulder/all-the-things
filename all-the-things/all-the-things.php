@@ -194,7 +194,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                 <style scoped>
                     #things-list-'.$r.' form {
                         display: none;
-                        padding: 5px;
+                        padding: 2px;
                     }
                     /* * #things-list-'.$r.' form, /* DEBUG */
                     #things-list-'.$r.':hover form {
@@ -207,8 +207,9 @@ function aqua_patterns_page_list_shortcode($attr) {
                     #clear-all-'.$r.' {
                         -webkit-appearance: none;
                         display: inline-block;
-                        margin: 0 2px 2px 0;
-                        padding: 0 5px;
+                        margin: 0 2px 1px 0;
+                        padding: 0 3px 2px;
+                        line-height: 1.2;
                         opacity: .5;
                         background-color: #000;
                         color: #fff;
@@ -285,6 +286,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                     position: fixed;
                     overflow: auto;
                     max-height: 100vh;
+                    max-width: 150px;
                     '.$fixed_arr[0].': 0;
                     '.$fixed_arr[1].': 0;
                     opacity: .4;
@@ -302,6 +304,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                 }
                 #things-list-'.$r.':hover {
                     opacity: 1;
+                    max-width: 200px;
                 }
                 #things-list-'.$r.':hover:before {
                     display: none;
@@ -333,7 +336,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                 #things-list-'.$r.', #things-list-'.$r.' ul {
                     margin: 0;
                     padding: 0;
-                    width: 150px;
+                    width: 100%;
                     background-color: rgba(50,50,50,.6);
                 }
                 #things-list-'.$r.' > li > ul > li:last-child {
@@ -342,7 +345,7 @@ function aqua_patterns_page_list_shortcode($attr) {
                 #things-list-'.$r.' a {
                     display: block;
                     width: 100%;
-                    padding: 2px 5px;
+                    padding: 1px 5px;
                     color: #fff;
                     text-decoration: none;
                     transition: color 300ms;

@@ -173,7 +173,7 @@ function aqua_patterns_page_list_shortcode($attr) {
     wp_reset_postdata();
 
     // add edit link for page then close list
-    $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ '.get_the_title().'</li></a>';
+    $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ Edit Post</li></a>';
     $list .= '</ul>';
 
     // create optional mods selector

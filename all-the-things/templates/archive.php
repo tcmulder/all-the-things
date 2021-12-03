@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-    <?php wp_head(); //mandatory ?>
+    <?php wp_head(); ?>
 </head>
 <body>
     <?php query_posts('posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC'); ?>
@@ -17,6 +17,6 @@
             <?php endwhile; ?>
         </ul>
     <?php endif; wp_reset_query(); ?>
-<?php wp_footer(); //mandatory ?>
+<?php wp_footer(); ?>
 </body>
 </html>

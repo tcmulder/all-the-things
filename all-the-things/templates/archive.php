@@ -48,7 +48,10 @@
         <ul class="things">
             <?php while(have_posts()) : the_post(); ?>
                 <li class="things__pattern">
-                    <a href="<?php the_permalink(); ?>">
+                    <div class="things__frame">
+                        <iframe id="frame" src="<?php the_permalink(); ?>?demo" tabindex="-1"></iframe>
+                    </div>
+                    <a href="<?php the_permalink(); ?>" class="things__link">
                         <?php the_title(); ?>
                     </a>
                 </li>
@@ -67,6 +70,46 @@
                 transform: translate(15%, 15%) rotate(-9deg);
                 fill: aquamarine;
                 opacity: 0.1;
+            }
+            .things {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 50px 25px;
+            }
+            .things__link {
+                display: block;
+                margin-top: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                text-decoration: none;
+                color: teal;
+            }
+            .things__pattern {
+                position: relative;
+                list-style: none;
+                min-width: 0;
+            }
+            .things__frame {
+                width: 250px;
+                height: 141px;
+                padding: 0;
+                overflow: hidden;
+                border: 1px solid teal;
+                opacity: 0.15;
+                transition: opacity .3s;
+            }
+            .things__pattern:focus-within .things__frame,
+            .things__pattern:hover .things__frame {
+                opacity: 1;
+            }
+            .things__frame iframe {
+                width: 960px;
+                height: 540px;
+                border: 1px solid black;
+            }
+            .things__frame iframe {
+                transform: scale(0.260416667);
+                transform-origin: 0 0;
             }
         </style>
     <?php endif; wp_reset_query(); ?>

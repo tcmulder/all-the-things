@@ -173,7 +173,8 @@ function aqua_patterns_page_list_shortcode($attr) {
     wp_reset_postdata();
 
     // add edit link for page then close list
-    $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
+    // normally we'd reverse/un-reverse to bypass proxy like: $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
+    $list .= '<li><a href="'.admin_url('/post.php?post='.get_the_id().'&action=edit').'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
     $list .= '</ul>';
 
     // create optional mods selector
@@ -184,7 +185,10 @@ function aqua_patterns_page_list_shortcode($attr) {
     if($mods_id){
         
         // get the mods
-        $group = acf_get_fields_by_id($mods_id);
+        $group = false;
+        if (function_exists('acf_get_fields_by_id')){
+            $group = acf_get_fields_by_id($mods_id);
+        }
         
         // start creating the list if we have items
         if($group){
@@ -250,11 +254,12 @@ function aqua_patterns_page_list_shortcode($attr) {
                         $("#clear-all-'.$r.'").on("click", function(){
                             $inputs.prop("checked", "").change();
                         });
+                        // normally we\'d reverse/un-reverse to bypass proxy like:
                         // bypass proxy url replacement
-                        $("#things-link-'.$r.'").each(function(e){
-                            var $this = $(this);
-                            $this.attr("href", $this.attr("href").split("").reverse().join(""));
-                        });
+                        // $("#things-link-'.$r.'").each(function(e){
+                        //     var $this = $(this);
+                        //     $this.attr("href", $this.attr("href").split("").reverse().join(""));
+                        // });
                     });
                 </script>
             ';
@@ -388,4 +393,34 @@ function aqua_patterns_page_list_in_footer(){
     if(aqua_patterns_is_allowed_server()) {
         echo do_shortcode('[pagelist fixed="right-bottom" mods_id="7"]');
     }
+}
+
+/**
+ * Add special shortcodes to display some of all the things
+ */
+add_shortcode( 'all_the_things_heroes', 'aqua_patterns_shortcode_heroes' );
+function aqua_patterns_shortcode_heroes() {
+	$query = new WP_Query( array(
+        'post_type' => 'custom-patterns',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'custom-patterns-categories',
+                'field'    => 'slug',
+                'terms'    => 'hero',
+            ),
+        ),
+    ) );
+    ob_start();
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            printf( '<h2 style="margin:2em auto 1em;text-align:center;">%s</h2>', get_the_title() );
+            the_content();
+        }
+        wp_reset_query();
+    } else {
+        echo 'No Hero Patterns Found';
+    }
+    $output = ob_get_clean();
+    echo $output;
 }

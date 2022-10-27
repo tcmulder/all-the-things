@@ -394,33 +394,3 @@ function aqua_patterns_page_list_in_footer(){
         echo do_shortcode('[pagelist fixed="right-bottom" mods_id="7"]');
     }
 }
-
-/**
- * Add special shortcodes to display some of all the things
- */
-add_shortcode( 'all_the_things_heroes', 'aqua_patterns_shortcode_heroes' );
-function aqua_patterns_shortcode_heroes() {
-	$query = new WP_Query( array(
-        'post_type' => 'custom-patterns',
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'custom-patterns-categories',
-                'field'    => 'slug',
-                'terms'    => 'hero',
-            ),
-        ),
-    ) );
-    ob_start();
-    if ( $query->have_posts() ) {
-        while ( $query->have_posts() ) {
-            $query->the_post();
-            printf( '<h2 style="margin:2em auto 1em;text-align:center;">%s</h2>', get_the_title() );
-            the_content();
-        }
-        wp_reset_query();
-    } else {
-        echo 'No Hero Patterns Found';
-    }
-    $output = ob_get_clean();
-    echo $output;
-}

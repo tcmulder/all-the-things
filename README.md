@@ -21,6 +21,10 @@ Creates a pattern library where one can develope features in isolation separate 
 
 == Changelog ==
 
+= 2.0.0 =
+
+- Move files to root of repo for easier installation.
+
 = 1.0.3 =
 
 - Lazy load thumbnails and add list.

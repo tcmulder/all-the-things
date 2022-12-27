@@ -23,7 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'AQUA_PATTERNS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AQUA_PATTERNS_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
-define( 'AQUA_PATTERNS_EXCLUDED_MODS', array( 'ani', 'ani_advanced', 'ani_stagger' ) );
 define( 'AQUA_PATTERNS_ALLOWED_SERVERS', array( 'test.thinkaquamarine.com' ) );
 
 /**
@@ -130,8 +129,6 @@ function aqua_patterns_custom_archive_template($archive_template) {
     right top:                  [pagelist fixed="right-top"]
     bottom left:                [pagelist fixed="left-bottom"]
     note: x comes before y always
-
-    Show mods (by group ID): [pagelist mod="42"]
 //
 \*------------------------------------*/
 add_shortcode('pagelist', 'aqua_patterns_page_list_shortcode');
@@ -140,7 +137,6 @@ function aqua_patterns_page_list_shortcode($attr) {
     // get attributes
     extract(shortcode_atts(array(
         'fixed' => '',
-        'mods_id'  => false,
     ), $attr));
     $args = array(
         'post_type'         => 'all-the-things',
@@ -176,109 +172,6 @@ function aqua_patterns_page_list_shortcode($attr) {
     // normally we'd reverse/un-reverse to bypass proxy like: $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
     $list .= '<li><a href="'.admin_url('/post.php?post='.get_the_id().'&action=edit').'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
     $list .= '</ul>';
-
-    // create optional mods selector
-    global $wpdb;
-    $mods_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_title =  'Settings - Global' ");
-    $mods = '';
-    $form_style = '';
-    if($mods_id){
-        
-        // get the mods
-        $group = false;
-        if (function_exists('acf_get_fields_by_id')){
-            $group = acf_get_fields_by_id($mods_id);
-        }
-        
-        // start creating the list if we have items
-        if($group){
-        
-            // create styling
-            $form_style = '
-                <style scoped>
-                    #things-list-'.$r.' form {
-                        display: none;
-                        padding: 2px;
-                    }
-                    /* * #things-list-'.$r.' form, /* DEBUG */
-                    #things-list-'.$r.':hover form {
-                        display: block;
-                    }
-                    #things-list-'.$r.' input[type="checkbox"] {
-                        display: none;
-                    }
-                    #things-list-'.$r.' label,
-                    #clear-all-'.$r.' {
-                        -webkit-appearance: none;
-                        display: inline-block;
-                        margin: 0 2px 1px 0;
-                        padding: 0 3px 2px;
-                        line-height: 1.2;
-                        opacity: .5;
-                        background-color: #000;
-                        color: #fff;
-                        white-space: nowrap;
-                        border-radius: 3px;
-                        cursor: pointer;
-                    }
-                    #things-list-'.$r.' input:checked + label {
-                        opacity: 1;
-                    }
-                </style>
-            ';
-            
-            // create behavior
-            $script = '
-                <script>
-                    jQuery(function($){
-                        // apply mods to all modules
-                        var $groups = $(".page-content > *");
-                        var $inputs = $("#things-list-'.$r.'").find("input");
-                        $inputs.on("change", function(){
-                            var $this = $(this);
-                            if($this.is(":checked")){
-                                $groups.addClass($this.val());
-                            } else {
-                                var classes = [];
-                                $groups.each(function(){
-                                    classes.push.apply(classes, $(this).attr("class").split(" "));
-                                });
-                                $.each(classes, function(i, c) {
-                                    if(c.indexOf($this.val()) !== -1) {
-                                        $groups.removeClass(c);
-                                    }
-                                });
-                            }
-                        });
-                        // uncheck all mods
-                        $("#clear-all-'.$r.'").on("click", function(){
-                            $inputs.prop("checked", "").change();
-                        });
-                        // normally we\'d reverse/un-reverse to bypass proxy like:
-                        // bypass proxy url replacement
-                        // $("#things-link-'.$r.'").each(function(e){
-                        //     var $this = $(this);
-                        //     $this.attr("href", $this.attr("href").split("").reverse().join(""));
-                        // });
-                    });
-                </script>
-            ';
-            $mods .= '<form action="">';
-                $mods .= '<input type="button" id="clear-all-'.$r.'" value="clear all">';
-                if($group){
-                    foreach($group as $set){
-                        if(isset($set['choices']) && !in_array($set[ 'name' ], AQUA_PATTERNS_EXCLUDED_MODS)){
-                            foreach($set['choices'] as $choice=>$value){
-                                $mods .= '<input type="checkbox" id="'.$choice.'-'.$r.'" value="'.$choice.'">';
-                                $mods .= '<label for="'.$choice.'-'.$r.'">'.$choice.'</label>';
-                            }
-                        }
-                    }
-                }
-                $mods .= $script;
-            $mods .= '</form>';
-        }
-    }
 
     // if we got a list of all the things
     if($list) {
@@ -375,9 +268,7 @@ function aqua_patterns_page_list_shortcode($attr) {
         $str =  '
             <ul id="things-list-'.$r.'">
             '.$list_style.'
-            '.$form_style.'
                 <li>
-                    '.$mods.'
                     '.$list.'
                     <a href="'.get_post_type_archive_link('all-the-things').'">All the Things</a>
                 </li>
@@ -391,6 +282,6 @@ function aqua_patterns_page_list_shortcode($attr) {
 add_action( 'wp_footer', 'aqua_patterns_page_list_in_footer', 50 );
 function aqua_patterns_page_list_in_footer(){
     if(aqua_patterns_is_allowed_server()) {
-        echo do_shortcode('[pagelist fixed="right-bottom" mods_id="7"]');
+        echo do_shortcode('[pagelist fixed="right-bottom"]');
     }
 }

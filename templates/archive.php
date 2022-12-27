@@ -45,15 +45,16 @@
 <body>
     <?php query_posts('posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC'); ?>
     <?php if(have_posts()) : ?>
-        <ul class="things-list">
+        <select class="things-list">
+            <option disabled selected>
+                <?php _e( '-- choose --', 'all-the-things' ); ?>
+            </option>
             <?php while(have_posts()) : the_post(); ?>
-                <li>
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_title(); ?>
-                    </a>
-                </li>
+                <option value="<?php the_permalink(); ?>">
+                    <?php the_title(); ?>
+                </option>
             <?php endwhile; ?>
-        </ul>
+        </select>
         <ul class="things-grid">
             <?php while(have_posts()) : the_post(); ?>
                 <li>
@@ -86,22 +87,13 @@
                 opacity: 0.1;
             }
             .things-list {
-                list-style: square;
-                margin: 0 0 16px;
-                padding: 16px;
-                border-bottom: 1px dashed aquamarine;
-            }
-            @media (min-width: 768px) {
-                .things-list {
-                    columns: 4;
-                }
-            }
-            .things-list li {
-                line-height: 1.1;
-            }
-            .things-list a {
-                font-size: 16px;
-                color: teal;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+                font-size: 14px;
+                background-color: aquamarine;
+                border: 0;
             }
             .things-grid {
                 display: grid;
@@ -148,8 +140,12 @@
         </style>
     <?php endif; wp_reset_query(); ?>
     <script>
-        // lazy load iframes
         window.addEventListener('load', () => {
+            // handle quick links
+            const quickSelect = document.querySelector('.things-list');
+            quickSelect.focus();
+            quickSelect.addEventListener('change', (el) => window.location = quickSelect.value);
+            // lazy load iframes
             const iframes = document.querySelectorAll('iframe');
             iframes[0]?.setAttribute('src', iframes[0].dataset.src);
             for (let i = 0; i < iframes.length; i++) {

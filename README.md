@@ -3,8 +3,8 @@
 Contributors: tcmulder
 Tags: acf, pattern library
 Requires at least: 5.8.2
-Tested up to: 5.8.2
-Stable tag: 1.0.3
+Tested up to: 6.2.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ Creates a pattern library where one can develope features in isolation separate 
 
 = 2.0.0 =
 
-- Move files to root of repo for easier installation.
+- Make select box easier to use (has timeout and allows Esc key to halt navigation)
 
 = 1.0.3 =
 

@@ -45,13 +45,22 @@
 <body>
     <?php query_posts('posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC'); ?>
     <?php if(have_posts()) : ?>
+        <?php echo str_replace( '&#8211;', '-', get_the_title() ); ?>
         <select class="things-list">
             <option disabled selected>
                 <?php _e( '-- choose --', 'all-the-things' ); ?>
             </option>
             <?php while(have_posts()) : the_post(); ?>
                 <option value="<?php the_permalink(); ?>">
-                    <?php the_title(); ?>
+                    <?php
+                        if ( stripos( get_the_title(), ' ~ ' ) !== false ) {
+                            $parts = explode( ' ~ ', get_the_title() );
+                            echo $parts[1] . ' ~ ' . $parts[0];
+
+                        } else {
+                            echo str_replace( '&#8211;', '-', get_the_title() );
+                        }
+                    ?>
                 </option>
             <?php endwhile; ?>
         </select>
@@ -140,16 +149,27 @@
         </style>
     <?php endif; wp_reset_query(); ?>
     <script>
-        window.addEventListener('load', () => {
+        window.addEventListener('load', function() {
             // handle quick links
             const quickSelect = document.querySelector('.things-list');
             quickSelect.focus();
-            quickSelect.addEventListener('change', (el) => window.location = quickSelect.value);
+
+            var timer = null;
+            quickSelect.addEventListener('keydown', function(e) {
+                clearTimeout(timer);
+                if (e.key !== 'Escape') {
+                    timer = setTimeout(function() {
+                        window.location = quickSelect.value
+                    }, 2000);
+                }
+            });
+
+
             // lazy load iframes
             const iframes = document.querySelectorAll('iframe');
             iframes[0]?.setAttribute('src', iframes[0].dataset.src);
             for (let i = 0; i < iframes.length; i++) {
-                iframes[i].addEventListener('load', () => {
+                iframes[i].addEventListener('load', function() {
                     iframes[i+1]?.setAttribute('src', iframes[i+1].dataset.src);
                 });
             }

@@ -149,17 +149,19 @@
         </style>
     <?php endif; wp_reset_query(); ?>
     <script>
-        window.addEventListener('load', function() {
+        window.addEventListener('load', () => {
             // handle quick links
             const quickSelect = document.querySelector('.things-list');
             quickSelect.focus();
 
-            var timer = null;
-            quickSelect.addEventListener('keydown', function(e) {
+            let timer = null;
+            quickSelect.addEventListener('keydown', (e) => {
                 clearTimeout(timer);
                 if (e.key !== 'Escape') {
-                    timer = setTimeout(function() {
-                        window.location = quickSelect.value
+                    timer = setTimeout(() => {
+                        if (quickSelect.value.startsWith('http')) {
+                            window.location = quickSelect.value
+                        }
                     }, 2000);
                 }
             });
@@ -169,7 +171,7 @@
             const iframes = document.querySelectorAll('iframe');
             iframes[0]?.setAttribute('src', iframes[0].dataset.src);
             for (let i = 0; i < iframes.length; i++) {
-                iframes[i].addEventListener('load', function() {
+                iframes[i].addEventListener('load', () => {
                     iframes[i+1]?.setAttribute('src', iframes[i+1].dataset.src);
                 });
             }

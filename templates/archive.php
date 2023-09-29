@@ -45,10 +45,9 @@
 <body>
     <?php query_posts('posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC'); ?>
     <?php if(have_posts()) : ?>
-        <?php echo str_replace( '&#8211;', '-', get_the_title() ); ?>
         <select class="things-list">
             <option disabled selected>
-                <?php _e( '-- choose --', 'all-the-things' ); ?>
+                <?php _e( 'Start typing to select a pattern, then press Enter to navigate there.', 'all-the-things' ); ?>
             </option>
             <?php while(have_posts()) : the_post(); ?>
                 <option value="<?php the_permalink(); ?>">
@@ -60,6 +59,7 @@
                         } else {
                             echo str_replace( '&#8211;', '-', get_the_title() );
                         }
+                        _e( ' (press enter)', 'all-the-things' )
                     ?>
                 </option>
             <?php endwhile; ?>
@@ -96,13 +96,16 @@
                 opacity: 0.1;
             }
             .things-list {
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 100;
-                font-size: 14px;
-                background-color: aquamarine;
+                -webkit-appearance: none;
+                appearance: none;
+                display: block;
+                width: 100%;
+                padding: 0.5em;
                 border: 0;
+                border-radius: 0;
+            }
+            .things-list:not(:focus) {
+                opacity: 0;
             }
             .things-grid {
                 display: grid;
@@ -152,20 +155,16 @@
         window.addEventListener('load', () => {
             // handle quick links
             const quickSelect = document.querySelector('.things-list');
-            quickSelect.focus();
-
-            let timer = null;
-            quickSelect.addEventListener('keydown', (e) => {
-                clearTimeout(timer);
-                if (e.key !== 'Escape') {
-                    timer = setTimeout(() => {
+            if (quickSelect) {
+                quickSelect.focus();
+                quickSelect.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
                         if (quickSelect.value.startsWith('http')) {
                             window.location = quickSelect.value
                         }
-                    }, 2000);
-                }
-            });
-
+                    }
+                });
+            }
 
             // lazy load iframes
             const iframes = document.querySelectorAll('iframe');

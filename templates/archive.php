@@ -46,7 +46,7 @@
     <?php query_posts('posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC'); ?>
     <?php if(have_posts()) : ?>
         <select class="things-list">
-            <option disabled selected>
+            <option disabled selected value="">
                 <?php _e( 'Start typing to select a pattern, then press Enter to navigate there.', 'all-the-things' ); ?>
             </option>
             <?php while(have_posts()) : the_post(); ?>
@@ -159,7 +159,7 @@
                 quickSelect.focus();
                 quickSelect.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
-                        if (quickSelect.value.startsWith('http')) {
+                        if (quickSelect.value) {
                             window.location = quickSelect.value
                         }
                     }

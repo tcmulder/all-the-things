@@ -69,7 +69,7 @@
                 <li>
                     <a href="<?php the_permalink(); ?>">
                         <div>
-                            <iframe id="frame" data-src="<?php the_permalink(); ?>?demo" tabindex="-1"></iframe>
+                            <iframe id="frame" data-src="<?php the_permalink(); ?>?demo" tabindex="-1" style="display:none"></iframe>
                         </div>
                         <span>
                             <?php the_title(); ?>
@@ -173,6 +173,8 @@
                 iframes[i].addEventListener('load', () => {
                     iframes[i+1]?.setAttribute('src', iframes[i+1].dataset.src);
                 });
+                // prevent focus within the password block
+                setTimeout(() => iframes[i].style.setProperty('display', 'block'), 500);
             }
         })
     </script>

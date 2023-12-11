@@ -40,10 +40,43 @@ function aqua_patterns_is_allowed_server() {
 }
 
 /**
- * Create All the Things CPT
+ * Create All the Things CPT and terms
  */
 add_action('init', 'aqua_patterns_create_all_the_things');
 function aqua_patterns_create_all_the_things() {
+
+    register_taxonomy( 'all-the-things-thing', 'all-the-things',
+		array(
+			'labels'				=> array(
+				'name'                  => _x( 'Types', 'Taxonomy Types', 'aquamin' ),
+				'singular_name'         => _x( 'Type', 'Taxonomy Type', 'aquamin' ),
+				'search_items'          => __( 'Search Types', 'aquamin' ),
+				'popular_items'         => __( 'Popular Types', 'aquamin' ),
+				'all_items'             => __( 'All Types', 'aquamin' ),
+				'parent_item'           => __( 'Parent Type', 'aquamin' ),
+				'parent_item_colon'     => __( 'Parent Type', 'aquamin' ),
+				'edit_item'             => __( 'Edit Type', 'aquamin' ),
+				'update_item'           => __( 'Update Type', 'aquamin' ),
+				'add_new_item'          => __( 'Add New Type', 'aquamin' ),
+				'new_item_name'         => __( 'New Type Name', 'aquamin' ),
+				'add_or_remove_items'   => __( 'Add or remove Types', 'aquamin' ),
+				'choose_from_most_used' => __( 'Choose from most used Types', 'aquamin' ),
+				'menu_name'             => __( 'Types', 'aquamin' ),
+			),
+			'hierarchical' 			=> true,
+			'public' 				=> true,
+			'has_archive' 			=> false,
+			'show_in_rest' 			=> true,
+			'show_admin_column' 	=> true,
+			'capabilities' 			=> array(
+				'manage__terms' => 'edit_posts',
+				'edit_terms'    => 'manage_categories',
+				'delete_terms'  => 'manage_categories',
+				'assign_terms'  => 'edit_posts'
+			)
+		)
+	);
+
     register_post_type('all-the-things',
         array(
             'labels'                            => array(
@@ -77,6 +110,8 @@ function aqua_patterns_create_all_the_things() {
             ),
         )
     );
+
+
 }
 
 /**

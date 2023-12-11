@@ -21,6 +21,12 @@ Creates a pattern library where one can develope features in isolation separate 
 
 == Changelog ==
 
+= 2.0.1 =
+
+- Make select box even easier to use (just type and hit enter).
+- Prevent slow iframes from halting load of other iframes.
+- Add types taxonomy.
+
 = 2.0.0 =
 
 - Make select box easier to use (has timeout and allows Esc key to halt navigation)

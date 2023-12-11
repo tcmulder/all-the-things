@@ -52,12 +52,11 @@
             <?php while(have_posts()) : the_post(); ?>
                 <option value="<?php the_permalink(); ?>">
                     <?php
-                        if ( stripos( get_the_title(), ' ~ ' ) !== false ) {
-                            $parts = explode( ' ~ ', get_the_title() );
-                            echo $parts[1] . ' ~ ' . $parts[0];
-
-                        } else {
-                            echo str_replace( '&#8211;', '-', get_the_title() );
+                        the_title();
+                        $terms = get_the_terms( get_the_id(), 'all-the-things-thing' );
+                        if ( $terms ) {
+                            $terms = array_map( function( $term ) { return $term->name; }, $terms );
+                            printf( ' (%s)', strtolower( implode( ', ', $terms ) ) );
                         }
                     ?>
                 </option>

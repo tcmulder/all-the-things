@@ -26,6 +26,7 @@ Creates a pattern library where one can develope features in isolation separate 
 - Make select box even easier to use (just type and hit enter).
 - Prevent slow iframes from halting load of other iframes.
 - Add types taxonomy.
+- Add [aqua_synced_pattern id="123"] shortcode to show synced pattern content.
 
 = 2.0.0 =
 

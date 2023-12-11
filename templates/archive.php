@@ -63,18 +63,27 @@
             <?php endwhile; ?>
         </select>
         <ul class="things-grid">
-            <?php while(have_posts()) : the_post(); ?>
-                <li>
-                    <a href="<?php the_permalink(); ?>" class="things-control">
-                        <div>
-                            <iframe data-src="<?php the_permalink(); ?>?demo" tabindex="-1"></iframe>
-                        </div>
-                        <span>
-                            <?php the_title(); ?>
-                        </span>
-                    </a>
-                </li>
-            <?php endwhile; ?>
+            <?php $items = array(); ?>
+            <?php
+                while(have_posts()) {
+                    the_post();
+                    $terms = get_the_terms( get_the_id(), 'all-the-things-thing' );
+                    $term = $terms[0] ?? '' ? $terms[0]->name : 'Other';
+                    $html = sprintf(
+                        '<li><a href="%s" class="things-control"><div><iframe data-src="%s?demo" tabindex="-1"></iframe></div><span>%s</span></a></li>',
+                        get_the_permalink(),
+                        get_the_permalink(),
+                        get_the_title()
+                    );
+                    if ( ! isset( $items[ $term ] ) ) {
+                        $items[ $term ] = array( sprintf( '<li class="things-label"><h2>%s:</h2></li>', $term ) );
+                    }
+                    array_push( $items[ $term ], $html );
+                }
+                foreach( $items as $item ) {
+                    echo implode( '', $item );
+                }
+            ?>
         </ul>
         <style>
             .things-wrap::before {
@@ -123,6 +132,14 @@
                 list-style: none;
                 min-width: 0;
             }
+            .things-grid .things-label {
+                grid-column: 1 / -1;
+                margin-bottom: -20px;
+                padding-top: 20px;
+                padding-left: 10px;
+                font-style: italic;
+                color: teal;
+            }
             .things-grid div {
                 pointer-events: none;
                 width: 250px;
@@ -134,7 +151,7 @@
                 transition: opacity .3s;
             }
             .things-grid span {
-                font-size: 20px;
+                font-size: 14px;
             }
             .things-grid li:focus-within div,
             .things-grid li:hover div {

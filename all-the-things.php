@@ -155,6 +155,24 @@ function aqua_patterns_custom_archive_template($archive_template) {
 }
 
 /*------------------------------------*\
+    ::Show synced pattern by ID via shortcode
+
+    Usage: [aqua_synced_pattern id="123"]
+//
+\*------------------------------------*/
+add_shortcode('aqua_synced_pattern', 'aqua_patterns_synced_pattern_shortcode');
+function aqua_patterns_synced_pattern_shortcode($attr) {
+    
+    $html = '';
+    extract(shortcode_atts(array('id' => 0), $attr));
+    $post_obj = get_post($id);
+    if ($post_obj) {
+        $html = apply_filters('the_content', $post_obj->post_content);
+    }
+    return $html;
+}
+
+/*------------------------------------*\
     ::Show Sub Page Nav for All the Things
 
     Basic usage:                [pagelist]

@@ -5,4 +5,4 @@
 		}
 	</style>
 <?php endif; ?>
-<?php include locate_template('page.php'); ?>
+<?php include locate_template( array( 'page.php', 'index.php' ) ); ?>

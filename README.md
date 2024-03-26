@@ -21,6 +21,10 @@ Creates a pattern library where one can develope features in isolation separate 
 
 == Changelog ==
 
+= 2.0.2 =
+
+- Fallback to index.php in the event page.php isn't available for single posts.
+
 = 2.0.1 =
 
 - Make select box even easier to use (just type and hit enter).

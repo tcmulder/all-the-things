@@ -222,8 +222,13 @@ function aqua_patterns_page_list_shortcode($attr) {
     wp_reset_postdata();
 
     // add edit link for page then close list
-    // normally we'd reverse/un-reverse to bypass proxy like: $list .= '<li><a href="'.strrev(admin_url('/post.php?post='.get_the_id().'&action=edit')).'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
-    $list .= '<li><a href="'.admin_url('/post.php?post='.get_the_id().'&action=edit').'" id="things-link-'.$r.'" target="_blank">✎ Edit (new tab)</li></a>';
+    $edit_url = admin_url('/post.php?post='.get_the_id().'&action=edit');
+    $edit_url_rev = strrev(admin_url('/post.php?post='.get_the_id().'&action=edit'));
+    $list .= '<li>';
+        $list .= '<a href="javascript:void(0);" onclick="window.open(\''.$edit_url_rev.'\'.split(\'\').reverse().join(\'\'),\'_blank\')" id="things-link-'.$r.'">✎ Edit (new tab)</a>';
+        // reverse the URL so browsersync doesn't open via proxy
+        // $list .= '<script>document.getElementById("things-link-'.$r.'").onclick=function(){window.open("'.$edit_url_rev.'".split("").reverse().join(""),"_blank")}</script>';
+    $list .= '<li>';
     $list .= '</ul>';
 
     // if we got a list of all the things

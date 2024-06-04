@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pattern Library
 Description: Adds a basic pattern library to your WordPress site.
-Version:     2.0.0
+Version:     2.0.3
 Author:      Tomas Mulder
 Author URI:  https://www.thinkaquamarine.com
 License:     GPL2
@@ -139,7 +139,7 @@ function aqua_patterns_redirect_to_specific_page() {
 add_filter('single_template', 'aqua_patterns_custom_single_template');
 function aqua_patterns_custom_single_template($single_template) {
     global $post;
-    if ($post->post_type === 'all-the-things') {
+    if ($post->post_type === 'all-the-things' && basename($single_template) === 'single.php') {
         return AQUA_PATTERNS_PLUGIN_DIR . 'templates/single.php';
     }
     return $single_template;

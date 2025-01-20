@@ -4,7 +4,7 @@ Contributors: tcmulder
 Tags: acf, pattern library
 Requires at least: 5.8.2
 Tested up to: 6.2.1
-Stable tag: 2.0.3
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,10 @@ Creates a pattern library where one can develope features in isolation separate 
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 3.0.0 =
+
+- Change shortcode to be [thing id="123"] or [thing slug="post-slug"] for showing synced pattern content.
 
 = 2.0.3 =
 

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pattern Library
 Description: Adds a basic pattern library to your WordPress site.
-Version:     2.0.3
+Version:     3.0.0
 Author:      Tomas Mulder
 Author URI:  https://www.thinkaquamarine.com
 License:     GPL2
@@ -157,17 +157,27 @@ function aqua_patterns_custom_archive_template($archive_template) {
 /*------------------------------------*\
     ::Show synced pattern by ID via shortcode
 
-    Usage: [aqua_synced_pattern id="123"]
-//
+    Usage: [thing id="123"] // most efficient
+           [thing slug="my-post"] // could match multiple posts
 \*------------------------------------*/
-add_shortcode('aqua_synced_pattern', 'aqua_patterns_synced_pattern_shortcode');
+add_shortcode('thing', 'aqua_patterns_synced_pattern_shortcode');
 function aqua_patterns_synced_pattern_shortcode($attr) {
-    
     $html = '';
-    extract(shortcode_atts(array('id' => 0), $attr));
-    $post_obj = get_post($id);
-    if ($post_obj) {
-        $html = apply_filters('the_content', $post_obj->post_content);
+    extract(shortcode_atts(array('id' => 0, 'slug' => ''), $attr));
+    if ($id) {
+        $post_obj = get_post($id);
+        if ($post_obj) {
+            $html = apply_filters('the_content', $post_obj->post_content);
+        }
+    } elseif ($slug) {
+        $post_types = get_post_types();
+        foreach($post_types as $type) {
+            $post_arr = get_posts(array('post_type' => $type, 'name' => $slug));
+            if ($post_arr) {
+                $html = apply_filters('the_content', $post_arr[0]->post_content);
+                break;
+            }
+        }
     }
     return $html;
 }

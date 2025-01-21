@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pattern Library
 Description: Adds a basic pattern library to your WordPress site.
-Version:     3.0.0
+Version:     3.0.1
 Author:      Tomas Mulder
 Author URI:  https://www.thinkaquamarine.com
 License:     GPL2
@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'AQUA_PATTERNS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AQUA_PATTERNS_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 define( 'AQUA_PATTERNS_ALLOWED_SERVERS', array( 'test.thinkaquamarine.com' ) );
+define( 'AQUA_PATTERNS_VERSION', '3.0.1' );
 
 /**
  * Check if localhost or other authorized server (will always show on localhost)
@@ -134,21 +135,31 @@ function aqua_patterns_create_all_the_things() {
 }
 
 /**
- * Enqueue styles and scripts in the footer
+ * Enqueue styles and scripts
  */
 add_action( 'wp_enqueue_scripts', 'aqua_patterns_register_scripts' );
 function aqua_patterns_register_scripts() {
-	if ( aqua_patterns_is_allowed_server() ) {
-		wp_register_style( 'aqua-all-the-things-style', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.css', null, '3.0.0', 'all' );
-		wp_register_script( 'aqua-all-the-things-script', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.js', null, '3.0.0', 'true' );
+	
+	// if we're on an authorized server and not within an archive iframe
+	if ( aqua_patterns_is_allowed_server() && ! isset( $_GET['all-the-things-thing'] ) ) {
+		// enqueue global scripts (mostly for the menu)
+		wp_enqueue_style( 'aqua-all-the-things-style', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.css', null, AQUA_PATTERNS_VERSION, 'all' );
+		wp_enqueue_script( 'aqua-all-the-things-script', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.js', null, AQUA_PATTERNS_VERSION, 'true' );
+	
+		// enqueue archive page scripts
+		if ( is_post_type_archive( 'all-the-things' ) ) {
+			wp_enqueue_style( 'aqua-all-the-things-archive-style', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things-archive.css', null, AQUA_PATTERNS_VERSION, 'all' );
+			wp_enqueue_script( 'aqua-all-the-things-archive-script', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things-archive.js', null, AQUA_PATTERNS_VERSION, 'true' );
+		}
 	}
-}
-add_action( 'wp_footer', 'aqua_patterns_enqueue_scripts' );
-function aqua_patterns_enqueue_scripts() {
-	if ( aqua_patterns_is_allowed_server() ) {
-		wp_enqueue_style( 'aqua-all-the-things-style' );
-		wp_enqueue_script( 'aqua-all-the-things-script' );
+
+	// if we're within an archive iframe then don't show the header/footer
+	if ( is_singular( 'all-the-things' ) ) {
+		wp_register_style( 'aqua-hide-all-the-things', null );
+		wp_enqueue_style( 'aqua-hide-all-the-things' );
+		wp_add_inline_style( 'aqua-hide-all-the-things', '.site-header, .site-footer, #__bs_notify__ { display: none !important; }' );
 	}
+
 }
 
 
@@ -248,7 +259,7 @@ function aqua_patterns_show() {
 		$links        = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ Edit (new tab)</a>%s', $edit_url_rev, $links );
 
 		// create the menu itself
-		$str = sprintf( '<div id="all-the-things"><select>%s</select>%s</div>', $options, $links );
+		$str = sprintf( '<div id="all-the-things"><select class="all-the-things-control">%s</select>%s</div>', $options, $links );
 
 		// send it!
 		return $str;
@@ -259,7 +270,7 @@ function aqua_patterns_show() {
 // show the page list in the footer
 add_action( 'wp_footer', 'aqua_patterns_page_list_in_footer', 50 );
 function aqua_patterns_page_list_in_footer() {
-	if ( aqua_patterns_is_allowed_server() ) {
+	if ( aqua_patterns_is_allowed_server() && ! isset( $_GET['all-the-things-thing'] ) ) {
 		echo aqua_patterns_show();
 	}
 }

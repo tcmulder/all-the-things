@@ -1,9 +1,12 @@
+/**
+ * All The Things global behavior
+ */
 window.addEventListener('DOMContentLoaded', function () {
 	// get the menu
 	const allTheThingsMenu = document.getElementById('all-the-things');
 	if (allTheThingsMenu) {
 		// cache dom nodes
-		const quickSelect = allTheThingsMenu.querySelector('select');
+		const quickSelect = allTheThingsMenu.querySelector('.all-the-things-control');
 
 		// prep to delay on keyboard input changes
 		let isTyping = false;

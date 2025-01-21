@@ -24,6 +24,8 @@ Creates a pattern library where one can develope features in isolation separate 
 = 3.0.0 =
 
 - Change shortcode to be [thing id="123"] or [thing slug="post-slug"] for showing synced pattern content.
+- Use select rather than list to navigate.
+- Refactor much of the code.
 
 = 2.0.3 =
 

@@ -15,7 +15,7 @@ Domain Path: /languages
  * Exit if accessed directly
  */
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -29,327 +29,237 @@ define( 'AQUA_PATTERNS_ALLOWED_SERVERS', array( 'test.thinkaquamarine.com' ) );
  * Check if localhost or other authorized server (will always show on localhost)
  */
 function aqua_patterns_is_allowed_server() {
-    if(
-        in_array( $_SERVER['SERVER_NAME'], AQUA_PATTERNS_ALLOWED_SERVERS )
-        || $_SERVER['SERVER_NAME'] === 'localhost'
-        || $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
-    ) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Create All the Things CPT and terms
- */
-add_action('init', 'aqua_patterns_create_all_the_things');
-function aqua_patterns_create_all_the_things() {
-
-    register_taxonomy( 'all-the-things-thing', 'all-the-things',
-		array(
-			'labels'				=> array(
-				'name'                  => _x( 'Types', 'Taxonomy Types', 'aquamin' ),
-				'singular_name'         => _x( 'Type', 'Taxonomy Type', 'aquamin' ),
-				'search_items'          => __( 'Search Types', 'aquamin' ),
-				'popular_items'         => __( 'Popular Types', 'aquamin' ),
-				'all_items'             => __( 'All Types', 'aquamin' ),
-				'parent_item'           => __( 'Parent Type', 'aquamin' ),
-				'parent_item_colon'     => __( 'Parent Type', 'aquamin' ),
-				'edit_item'             => __( 'Edit Type', 'aquamin' ),
-				'update_item'           => __( 'Update Type', 'aquamin' ),
-				'add_new_item'          => __( 'Add New Type', 'aquamin' ),
-				'new_item_name'         => __( 'New Type Name', 'aquamin' ),
-				'add_or_remove_items'   => __( 'Add or remove Types', 'aquamin' ),
-				'choose_from_most_used' => __( 'Choose from most used Types', 'aquamin' ),
-				'menu_name'             => __( 'Types', 'aquamin' ),
-			),
-			'hierarchical' 			=> true,
-			'public' 				=> true,
-			'has_archive' 			=> false,
-			'show_in_rest' 			=> true,
-			'show_admin_column' 	=> true,
-			'capabilities' 			=> array(
-				'manage__terms' => 'edit_posts',
-				'edit_terms'    => 'manage_categories',
-				'delete_terms'  => 'manage_categories',
-				'assign_terms'  => 'edit_posts'
-			)
-		)
-	);
-
-    register_post_type('all-the-things',
-        array(
-            'labels'                            => array(
-                'name'                          => _x('All The Things', 'Taxonomy General Name', 'aqua-pattern-library'),
-                'singular_name'                 => _x('All The Things', 'Taxonomy Singular Name', 'aqua-pattern-library'),
-                'menu_name'                     => __('Patterns', 'aqua-pattern-library'),
-                'all_items'                     => __('All Patterns', 'aqua-pattern-library'),
-                'parent_item'                   => __('Parent Pattern', 'aqua-pattern-library'),
-                'parent_item_colon'             => __('Parent Pattern:', 'aqua-pattern-library'),
-                'new_item_name'                 => __('New Pattern Name', 'aqua-pattern-library'),
-                'add_new_item'                  => __('Add New Pattern', 'aqua-pattern-library'),
-                'edit_item'                     => __('Edit Pattern', 'aqua-pattern-library'),
-                'update_item'                   => __('Update Pattern', 'aqua-pattern-library'),
-                'separate_items_with_commas'    => __('Separate patterns with commas', 'aqua-pattern-library'),
-                'search_items'                  => __('Search Patterns', 'aqua-pattern-library'),
-                'add_or_remove_items'           => __('Add or remove patterns', 'aqua-pattern-library'),
-                'choose_from_most_used'         => __('Choose from the most used patterns', 'aqua-pattern-library'),
-                'not_found'                     => __('Not Found', 'aqua-pattern-library'),
-            ),
-            'menu_icon'         => 'dashicons-analytics',
-            'has_archive'       => true,
-            'public'            => true,
-            'hierarchical'      => true,
-            'menu_position'     => 100, // bottom-ish
-            'show_in_rest'      => true,
-            'supports'          => array(
-                'editor',
-                'custom-fields',
-                'title',
-                'page-attributes'
-            ),
-        )
-    );
-
-
+	if (
+		in_array( $_SERVER['SERVER_NAME'], AQUA_PATTERNS_ALLOWED_SERVERS )
+		|| $_SERVER['SERVER_NAME'] === 'localhost'
+		|| $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
+	) {
+		return true;
+	}
+	return false;
 }
 
 /**
  * Redirect non-logged-in users to login page
  */
-add_action('template_redirect', 'aqua_patterns_redirect_to_specific_page');
+add_action( 'template_redirect', 'aqua_patterns_redirect_to_specific_page' );
 function aqua_patterns_redirect_to_specific_page() {
-    if(
-        // if this is one of all the things and the user isn't logged in
-        ('all-the-things' == get_post_type() && !is_user_logged_in())
-        // and if we're not on a server that should always show all the things
-        && ! aqua_patterns_is_allowed_server()
-    ) {
-        // make the user log in to see this post
-        auth_redirect();
-    }
+	if (
+		// if this is one of all the things and the user isn't logged in
+		( 'all-the-things' == get_post_type() && ! is_user_logged_in() )
+		// and if we're not on a server that should always show all the things
+		&& ! aqua_patterns_is_allowed_server()
+	) {
+		// make the user log in to see this post
+		auth_redirect();
+	}
 
 }
 
-/*------------------------------------*\
-    ::Create Custom Templates
-\*------------------------------------*/
+/**
+ * Create All the Things CPT and terms
+ */
+add_action( 'init', 'aqua_patterns_create_all_the_things' );
+function aqua_patterns_create_all_the_things() {
 
+	register_taxonomy(
+		'all-the-things-thing',
+		'all-the-things',
+		array(
+			'labels'            => array(
+				'name'                  => _x( 'Types', 'Taxonomy Types', 'aqua-pattern-library' ),
+				'singular_name'         => _x( 'Type', 'Taxonomy Type', 'aqua-pattern-library' ),
+				'search_items'          => __( 'Search Types', 'aqua-pattern-library' ),
+				'popular_items'         => __( 'Popular Types', 'aqua-pattern-library' ),
+				'all_items'             => __( 'All Types', 'aqua-pattern-library' ),
+				'parent_item'           => __( 'Parent Type', 'aqua-pattern-library' ),
+				'parent_item_colon'     => __( 'Parent Type', 'aqua-pattern-library' ),
+				'edit_item'             => __( 'Edit Type', 'aqua-pattern-library' ),
+				'update_item'           => __( 'Update Type', 'aqua-pattern-library' ),
+				'add_new_item'          => __( 'Add New Type', 'aqua-pattern-library' ),
+				'new_item_name'         => __( 'New Type Name', 'aqua-pattern-library' ),
+				'add_or_remove_items'   => __( 'Add or remove Types', 'aqua-pattern-library' ),
+				'choose_from_most_used' => __( 'Choose from most used Types', 'aqua-pattern-library' ),
+				'menu_name'             => __( 'Types', 'aqua-pattern-library' ),
+			),
+			'hierarchical'      => true,
+			'public'            => true,
+			'has_archive'       => false,
+			'show_in_rest'      => true,
+			'show_admin_column' => true,
+			'capabilities'      => array(
+				'manage__terms' => 'edit_posts',
+				'edit_terms'    => 'manage_categories',
+				'delete_terms'  => 'manage_categories',
+				'assign_terms'  => 'edit_posts',
+			),
+		)
+	);
+
+	register_post_type(
+		'all-the-things',
+		array(
+			'labels'        => array(
+				'name'                       => _x( 'All The Things', 'Taxonomy General Name', 'aqua-pattern-library' ),
+				'singular_name'              => _x( 'All The Things', 'Taxonomy Singular Name', 'aqua-pattern-library' ),
+				'menu_name'                  => __( 'Patterns', 'aqua-pattern-library' ),
+				'all_items'                  => __( 'All Patterns', 'aqua-pattern-library' ),
+				'parent_item'                => __( 'Parent Pattern', 'aqua-pattern-library' ),
+				'parent_item_colon'          => __( 'Parent Pattern:', 'aqua-pattern-library' ),
+				'new_item_name'              => __( 'New Pattern Name', 'aqua-pattern-library' ),
+				'add_new_item'               => __( 'Add New Pattern', 'aqua-pattern-library' ),
+				'edit_item'                  => __( 'Edit Pattern', 'aqua-pattern-library' ),
+				'update_item'                => __( 'Update Pattern', 'aqua-pattern-library' ),
+				'separate_items_with_commas' => __( 'Separate patterns with commas', 'aqua-pattern-library' ),
+				'search_items'               => __( 'Search Patterns', 'aqua-pattern-library' ),
+				'add_or_remove_items'        => __( 'Add or remove patterns', 'aqua-pattern-library' ),
+				'choose_from_most_used'      => __( 'Choose from the most used patterns', 'aqua-pattern-library' ),
+				'not_found'                  => __( 'Not Found', 'aqua-pattern-library' ),
+			),
+			'menu_icon'     => 'dashicons-analytics',
+			'has_archive'   => true,
+			'public'        => true,
+			'hierarchical'  => true,
+			'menu_position' => 100, // bottom-ish
+			'show_in_rest'  => true,
+			'supports'      => array(
+				'editor',
+				'custom-fields',
+				'title',
+				'page-attributes',
+			),
+		)
+	);
+
+}
+
+/**
+ * Enqueue styles and scripts in the footer
+ */
+add_action( 'wp_enqueue_scripts', 'aqua_patterns_register_scripts' );
+function aqua_patterns_register_scripts() {
+	if ( aqua_patterns_is_allowed_server() ) {
+		wp_register_style( 'aqua-all-the-things-style', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.css', null, '3.0.0', 'all' );
+		wp_register_script( 'aqua-all-the-things-script', AQUA_PATTERNS_PLUGIN_URI . 'assets/all-the-things.js', null, '3.0.0', 'true' );
+	}
+}
+add_action( 'wp_footer', 'aqua_patterns_enqueue_scripts' );
+function aqua_patterns_enqueue_scripts() {
+	if ( aqua_patterns_is_allowed_server() ) {
+		wp_enqueue_style( 'aqua-all-the-things-style' );
+		wp_enqueue_script( 'aqua-all-the-things-script' );
+	}
+}
+
+
+/**
+ * Create custom templates that mimic the single and archive templates
+ */
 // create the single page
-add_filter('single_template', 'aqua_patterns_custom_single_template');
-function aqua_patterns_custom_single_template($single_template) {
-    global $post;
-    if ($post->post_type === 'all-the-things' && basename($single_template) === 'single.php') {
-        return AQUA_PATTERNS_PLUGIN_DIR . 'templates/single.php';
-    }
-    return $single_template;
+add_filter( 'single_template', 'aqua_patterns_custom_single_template' );
+function aqua_patterns_custom_single_template( $single_template ) {
+	global $post;
+	if ( $post->post_type === 'all-the-things' && basename( $single_template ) === 'single.php' ) {
+		$single_template = AQUA_PATTERNS_PLUGIN_DIR . 'templates/single.php';
+	}
+	return $single_template;
 }
 // create the archive page
-add_filter('archive_template', 'aqua_patterns_custom_archive_template') ;
-function aqua_patterns_custom_archive_template($archive_template) {
-     global $post;
-     if (is_post_type_archive('all-the-things')) {
-          $archive_template = AQUA_PATTERNS_PLUGIN_DIR . 'templates/archive.php';
-     }
-     return $archive_template;
+add_filter( 'archive_template', 'aqua_patterns_custom_archive_template' );
+function aqua_patterns_custom_archive_template( $archive_template ) {
+	 global $post;
+	if ( is_post_type_archive( 'all-the-things' ) ) {
+		 $archive_template = AQUA_PATTERNS_PLUGIN_DIR . 'templates/archive.php';
+	}
+	 return $archive_template;
 }
 
-/*------------------------------------*\
-    ::Show synced pattern by ID via shortcode
-
-    Usage: [thing id="123"] // most efficient
-           [thing slug="my-post"] // could match multiple posts
-\*------------------------------------*/
-add_shortcode('thing', 'aqua_patterns_synced_pattern_shortcode');
-function aqua_patterns_synced_pattern_shortcode($attr) {
-    $html = '';
-    extract(shortcode_atts(array('id' => 0, 'slug' => ''), $attr));
-    if ($id) {
-        $post_obj = get_post($id);
-        if ($post_obj) {
-            $html = apply_filters('the_content', $post_obj->post_content);
-        }
-    } elseif ($slug) {
-        $post_types = get_post_types();
-        foreach($post_types as $type) {
-            $post_arr = get_posts(array('post_type' => $type, 'name' => $slug));
-            if ($post_arr) {
-                $html = apply_filters('the_content', $post_arr[0]->post_content);
-                break;
-            }
-        }
-    }
-    return $html;
+/**
+ * Show synced pattern by ID via a shortcode
+ *
+ * Usate: [thing id="123"] // most efficient
+ *        [thing slug="my-post"] // note: could match multiple posts
+ */
+add_shortcode( 'thing', 'aqua_patterns_synced_pattern_shortcode' );
+function aqua_patterns_synced_pattern_shortcode( $attr ) {
+	$html = '';
+	extract(
+		shortcode_atts(
+			array(
+				'id'   => 0,
+				'slug' => '',
+			),
+			$attr
+		)
+	);
+	if ( $id ) {
+		$post_obj = get_post( $id );
+		if ( $post_obj ) {
+			$html = apply_filters( 'the_content', $post_obj->post_content );
+		}
+	} elseif ( $slug ) {
+		$post_types = get_post_types();
+		foreach ( $post_types as $type ) {
+			$post_arr = get_posts(
+				array(
+					'post_type' => $type,
+					'name'      => $slug,
+				)
+			);
+			if ( $post_arr ) {
+				$html = apply_filters( 'the_content', $post_arr[0]->post_content );
+				break;
+			}
+		}
+	}
+	return $html;
 }
 
-/*------------------------------------*\
-    ::Show Sub Page Nav for All the Things
+/**
+ * Show sub page nav for all the things
+ */
+function aqua_patterns_show() {
 
-    Basic usage:                [pagelist]
-    Fixed usage:                [pagelist fixed="x-y"]
+	// get all the things
+	$page_id   = get_the_id();
+	$the_query = new WP_Query(
+		array(
+			'post_type'      => 'all-the-things',
+			'posts_per_page' => '-1',
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		)
+	);
 
-    Fixed examples:
-    right top:                  [pagelist fixed="right-top"]
-    bottom left:                [pagelist fixed="left-bottom"]
-    note: x comes before y always
-//
-\*------------------------------------*/
-add_shortcode('pagelist', 'aqua_patterns_page_list_shortcode');
-function aqua_patterns_page_list_shortcode($attr) {
-    
-    // get attributes
-    extract(shortcode_atts(array(
-        'fixed' => '',
-    ), $attr));
-    $args = array(
-        'post_type'         => 'all-the-things',
-        'posts_per_page'    => '-1',
-        'orderby'           => 'title',
-        'order'             => 'ASC',
-    );
-    
-    // essentially create random number to disambiguate
-    $r = filemtime( __FILE__ );
-    
-    // loop through all the things
-    $page_id = get_the_id();
-    $the_query = new WP_Query($args);
-    $list = '';
-    if ($the_query->have_posts()) {
-        
-        // add all the things to a list with links
-        $list .= '<ul>';
-        while ($the_query->have_posts()) {
-            $the_query->the_post();
-            $list .= '<li>';
-                $list .= '<a href="'.get_the_permalink().'"'.(get_the_id() === $page_id ? ' aria-current="page"' : '').'>';
-                    $list .= get_the_title();
-                $list .= '</a>';
-            $list .= '</li>';
+	// if we have things
+	if ( $the_query->have_posts() ) {
 
-        }
-    }
-    wp_reset_postdata();
+		// create the list of patterns
+		$options = '<option disabled selected>Patterns</option>';
+		while ( $the_query->have_posts() ) {
+			$the_query->the_post();
+			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
+		}
 
-    // add edit link for page then close list
-    $edit_url = admin_url('/post.php?post='.get_the_id().'&action=edit');
-    $edit_url_rev = strrev(admin_url('/post.php?post='.get_the_id().'&action=edit'));
-    $list .= '<li>';
-        $list .= '<a href="javascript:void(0);" onclick="window.open(\''.$edit_url_rev.'\'.split(\'\').reverse().join(\'\'),\'_blank\')" id="things-link-'.$r.'">✎ Edit (new tab)</a>';
-        // reverse the URL so browsersync doesn't open via proxy
-        // $list .= '<script>document.getElementById("things-link-'.$r.'").onclick=function(){window.open("'.$edit_url_rev.'".split("").reverse().join(""),"_blank")}</script>';
-    $list .= '<li>';
-    $list .= '</ul>';
+		// add edit link for page then wrap in list
+		$links        = '<a href="' . get_post_type_archive_link( 'all-the-things' ) . '" id="things-link">All the Things</a>';
+		$edit_url     = admin_url( '/post.php?post=' . get_the_id() . '&action=edit' );
+		$edit_url_rev = strrev( admin_url( '/post.php?post=' . get_the_id() . '&action=edit' ) );
+		$links        = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ Edit (new tab)</a>%s', $edit_url_rev, $links );
 
-    // if we got a list of all the things
-    if($list) {
-        
-        // establish optional fixed position styling
-        if($fixed != ''){
-            $fixed_arr = explode('-', $fixed);
-            $fixed = '
-                #things-list-'.$r.' {
-                    position: fixed;
-                    overflow: auto;
-                    max-height: 100vh;
-                    max-width: 150px;
-                    '.$fixed_arr[0].': 0;
-                    '.$fixed_arr[1].': 0;
-                    opacity: .4;
-                    transition: opacity 300ms;
-                }
-                #things-list-'.$r.':hover ul:before {
-                    content: "";
-                    position: absolute;
-                    background-color: black;
+		// create the menu itself
+		$str = sprintf( '<div id="all-the-things"><select>%s</select>%s</div>', $options, $links );
 
-                    '.$fixed_arr[0].': 0;
-                    '.$fixed_arr[1].': 0;
-                    z-index: -1;
-                    opacity: 0;
-                }
-                #things-list-'.$r.':hover {
-                    opacity: 1;
-                    max-width: 200px;
-                }
-                #things-list-'.$r.':hover:before {
-                    display: none;
-                }
-            ';
-        }
-        
-        // establish normal styling
-        $list_style = '
-        <style scoped>
-                #things-list-'.$r.' {
-                    position: relative;
-                    z-index: 9999;
-                }
-                #things-list-'.$r.' * {
-                    font-size: 10px !important;
-                    font-weight: normal !important;
-                    font-family: sans-serif !important;
-                    text-transform: none !important;
-                }
-                #things-list-'.$r.' li {
-                    list-style: none !important;
-                    margin-bottom: 0;
-                }
-                #things-list-'.$r.' li:before,
-                #things-list-'.$r.' li:after {
-                    display: none;
-                }
-                #things-list-'.$r.', #things-list-'.$r.' ul {
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                    background-color: rgba(50,50,50,.6);
-                }
-                #things-list-'.$r.' > li > ul > li:last-child {
-                    background-color: rgba(50,50,50,.7);
-                }
-                #things-list-'.$r.' a {
-                    display: block;
-                    width: 100%;
-                    padding: 1px 5px;
-                    color: #fff;
-                    text-decoration: none;
-                    transition: color 300ms;
-                }
-                #things-list-'.$r.' [aria-current="page"],
-                #things-list-'.$r.' a:hover {
-                    background-color: #000;
-                    color: white;
-                }
-                #things-list-'.$r.' li ul {
-                    display: none;
-                    position: relative;
-                }
-                /* * #things-list-'.$r.' li ul, /* DEBUG */
-                #things-list-'.$r.':hover ul {
-                    display: block;
-                }
-                '.$fixed.'
-        </style>';
-
-        // create the list
-        $str =  '
-            <ul id="things-list-'.$r.'">
-            '.$list_style.'
-                <li>
-                    '.$list.'
-                    <a href="'.get_post_type_archive_link('all-the-things').'">All the Things</a>
-                </li>
-            </ul>
-        ';
-        return $str;
-    }
+		// send it!
+		return $str;
+	}
+	wp_reset_postdata();
 }
 
-// show the page list
+// show the page list in the footer
 add_action( 'wp_footer', 'aqua_patterns_page_list_in_footer', 50 );
-function aqua_patterns_page_list_in_footer(){
-    if(aqua_patterns_is_allowed_server()) {
-        echo do_shortcode('[pagelist fixed="right-bottom"]');
-    }
+function aqua_patterns_page_list_in_footer() {
+	if ( aqua_patterns_is_allowed_server() ) {
+		echo aqua_patterns_show();
+	}
 }

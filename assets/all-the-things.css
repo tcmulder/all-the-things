@@ -1,0 +1,52 @@
+/**
+ * All The Things menu
+ */
+#all-the-things {
+	--c-all-the-things: dimgray;
+
+	background-color: black;
+	bottom: 0;
+	max-width: 150px;
+	overflow: hidden;
+	padding: 2px 5px 1px;
+	position: fixed;
+	right: 0;
+	transition: opacity 0.3s;
+	z-index: 9999;
+}
+
+#all-the-things:not(:hover, :focus-within) {
+	opacity: 0.4;
+}
+
+#all-the-things :is(a, select) {
+	all: initial;
+	box-sizing: border-box;
+	color: white;
+	cursor: pointer;
+	display: block;
+	font-family: monospace;
+	font-size: 10px;
+	padding: 5px;
+}
+
+#all-the-things a {
+	text-decoration: underline;
+	text-decoration-color: var(--c-all-the-things);
+}
+
+#all-the-things select {
+	border-radius: 99px;
+	margin-top: 5px;
+	outline: 1px solid var(--c-all-the-things);
+	width: 100%;
+}
+
+#all-the-things :is(a, select):is(:hover, :focus) {
+	--c-all-the-things: white;
+}
+
+#all-the-things:not(:hover, :focus-within) *:not(#things-link) {
+	left: -999px;
+	position: absolute;
+}

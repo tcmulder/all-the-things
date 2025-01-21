@@ -274,3 +274,18 @@ function aqua_patterns_page_list_in_footer() {
 		echo aqua_patterns_show();
 	}
 }
+
+/**
+ * Hack to fix Chrome password extension from setting focus on the password field.
+ * 
+ * You can remove this if you do not use this extension.
+ * 
+ * @see https://superuser.com/questions/1776123/icloud-password-chrome-extension-sets-focus-on-first-input-during-localhost-dev
+ */
+add_filter( 'the_content', 'aqua_patterns_extension_hack' );
+function aqua_patterns_extension_hack( $content ) {
+	if ( isset( $_GET['all-the-things-thing'] )  ) {
+		return str_replace( 'type="password"', 'type="text"', $content );
+	}
+	return $content;
+}

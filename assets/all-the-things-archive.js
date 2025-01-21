@@ -45,11 +45,10 @@ window.addEventListener('load', () => {
 						}
 					}
 				}
-				// prevent focus from occurring within this iframe (e.g. wp's password protected field)
-				if (document.activeElement.classList.contains('things-control')) {
-					focusTracker = document.activeElement;
-				} else {
-					focusTracker.focus();
+				// prevent focus from occurring within this iframe (rare but annoying)
+				// @see @see https://superuser.com/questions/1776123/icloud-password-chrome-extension-sets-focus-on-first-input-during-localhost-dev
+				if (document.activeElement.tagName === 'IFRAME') {
+					quickSelect.focus();
 				}
 			}
 		});

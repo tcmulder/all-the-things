@@ -23,8 +23,9 @@ Creates a pattern library where one can develope features in isolation separate 
 
 = 3.0.2 =
 
-- Move select down so it is easier to click.
+- Fix edit post link.
 - Allow open in new tab (must hold cmd/ctrl before opening select box)
+- Move select down so it is easier to click.
 
 = 3.0.1 =
 

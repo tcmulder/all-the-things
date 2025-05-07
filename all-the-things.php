@@ -252,22 +252,22 @@ function aqua_patterns_show() {
 			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
 		}
 		$select = sprintf( '<select class="all-the-things-control">%s</select>', $options );
-
-		// add link to edit this page (reversed till click to bypass any browsersync or other URL rewriting)
-		$edit_url     = admin_url( '/post.php?post=' . get_the_id() . '&action=edit' );
-		$edit_url_rev = strrev( admin_url( '/post.php?post=' . get_the_id() . '&action=edit' ) );
-		$link_edit    = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ %s</a>', $edit_url_rev, __( 'Edit (new tab)', 'aqua-pattern-library' ) );
-		
-		// add link to all of the things
-		$link_all_the_things = sprintf( '<a href="%s" id="things-link">%s</a>', get_post_type_archive_link( 'all-the-things' ), __( 'All the Things', 'aqua-pattern-library' ) );
-
-		// create the menu itself
-		$str = sprintf( '<div id="all-the-things">%s%s%s</div>', $link_edit, $select, $link_all_the_things );
-
-		// send it!
-		return $str;
 	}
 	wp_reset_postdata();
+	
+	// add link to edit this page (reversed till click to bypass any browsersync or other URL rewriting)
+	$edit_url     = admin_url( '/post.php?post=' . get_the_id() . '&action=edit' );
+	$edit_url_rev = strrev( admin_url( '/post.php?post=' . get_the_id() . '&action=edit' ) );
+	$link_edit    = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ %s</a>', $edit_url_rev, __( 'Edit', 'aqua-pattern-library' ) );
+	
+	// add link to all of the things
+	$link_all_the_things = sprintf( '<a href="%s" id="things-link">%s</a>', get_post_type_archive_link( 'all-the-things' ), __( 'All the Things', 'aqua-pattern-library' ) );
+
+	// create the menu itself
+	$str = sprintf( '<div id="all-the-things">%s%s%s</div>', $link_edit, $select, $link_all_the_things );
+
+	// send it!
+	return $str;
 }
 
 // show the page list in the footer

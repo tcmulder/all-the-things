@@ -36,10 +36,13 @@
 }
 
 #all-the-things select {
+	position: relative;
 	border-radius: 99px;
-	margin-top: 5px;
 	outline: 1px solid var(--c-all-the-things);
+	outline-offset: -5px;
 	width: 100%;
+	padding: 10px 15px;
+	margin: -5px;
 }
 
 #all-the-things :is(a, select):is(:hover, :focus) {

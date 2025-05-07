@@ -5,8 +5,11 @@ window.addEventListener('DOMContentLoaded', function () {
 	// get the menu
 	const allTheThingsMenu = document.getElementById('all-the-things');
 	if (allTheThingsMenu) {
-		// cache dom nodes
+		// cache dom nodes and defaults
 		const quickSelect = allTheThingsMenu.querySelector('.all-the-things-control');
+		const title = quickSelect.firstElementChild;
+		const textName = title.textContent;
+		const textTab = title.dataset.tab;
 
 		// prep to delay on keyboard input changes
 		let isTyping = false;
@@ -34,10 +37,23 @@ window.addEventListener('DOMContentLoaded', function () {
 			}, 10);
 		});
 
+		// allow new tab open (we can't detect key events once the select is opened)
+		let isBlank = false;
+		document.addEventListener('keydown', function (e) {
+			isBlank = e.metaKey || e.ctrlKey;
+			title.textContent = isBlank ? `${textName} ↗` : textName;
+		});
+		document.addEventListener('keyup', function (e) {
+			if (isBlank) {
+				title.textContent = textName;
+			}
+			isBlank = false;
+		});
+
 		// follow links on click (using isTyping to prevent navigation while still typing/searching)
 		quickSelect.addEventListener('change', function () {
 			if (!isTyping) {
-				window.location = quickSelect.value;
+				window.open(quickSelect.value, isBlank ? '_blank' : '_self');
 			}
 		});
 	}

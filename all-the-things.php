@@ -246,20 +246,23 @@ function aqua_patterns_show() {
 	if ( $the_query->have_posts() ) {
 
 		// create the list of patterns
-		$options = '<option disabled selected>Patterns</option>';
+		$options = sprintf( '<option disabled selected>%s</option>', __( 'Patterns', 'aqua-pattern-library' ) );
 		while ( $the_query->have_posts() ) {
 			$the_query->the_post();
 			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
 		}
+		$select = sprintf( '<select class="all-the-things-control">%s</select>', $options );
 
-		// add edit link for page then wrap in list
-		$links        = '<a href="' . get_post_type_archive_link( 'all-the-things' ) . '" id="things-link">All the Things</a>';
+		// add link to edit this page (reversed till click to bypass any browsersync or other URL rewriting)
 		$edit_url     = admin_url( '/post.php?post=' . get_the_id() . '&action=edit' );
 		$edit_url_rev = strrev( admin_url( '/post.php?post=' . get_the_id() . '&action=edit' ) );
-		$links        = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ Edit (new tab)</a>%s', $edit_url_rev, $links );
+		$link_edit    = sprintf( '<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ %s</a>', $edit_url_rev, __( 'Edit (new tab)', 'aqua-pattern-library' ) );
+		
+		// add link to all of the things
+		$link_all_the_things = sprintf( '<a href="%s" id="things-link">%s</a>', get_post_type_archive_link( 'all-the-things' ), __( 'All the Things', 'aqua-pattern-library' ) );
 
 		// create the menu itself
-		$str = sprintf( '<div id="all-the-things"><select class="all-the-things-control">%s</select>%s</div>', $options, $links );
+		$str = sprintf( '<div id="all-the-things">%s%s%s</div>', $link_edit, $select, $link_all_the_things );
 
 		// send it!
 		return $str;

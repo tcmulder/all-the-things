@@ -6,7 +6,7 @@
 
 	background-color: black;
 	bottom: 0;
-	max-width: 150px;
+	width: 155px;
 	overflow: hidden;
 	padding: 2px 5px 1px;
 	position: fixed;
@@ -16,6 +16,7 @@
 }
 
 #all-the-things:not(:hover, :focus-within) {
+	width: auto;
 	opacity: 0.4;
 }
 

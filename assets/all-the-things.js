@@ -2,6 +2,7 @@
  * All The Things global behavior
  */
 window.addEventListener('DOMContentLoaded', function () {
+
 	// get the menu
 	const allTheThingsMenu = document.getElementById('all-the-things');
 	if (allTheThingsMenu) {
@@ -9,16 +10,25 @@ window.addEventListener('DOMContentLoaded', function () {
 		const quickSelect = allTheThingsMenu.querySelector('.all-the-things-control');
 		const title = quickSelect.firstElementChild;
 		const textName = title.textContent;
-		const textTab = title.dataset.tab;
 
 		// prep to delay on keyboard input changes
 		let isTyping = false;
+		// prep to open in new/same tab
+		let anchorTarget = '_self';
 
-		// focus on all the things menu with cmd+p
+		// focus on all the things menu with cmd+p and blur on escape
 		document?.addEventListener('keydown', function (e) {
-			if (e.key === 'p' && e.metaKey) {
+			if (
+				(e.key === 'p' && e.metaKey && document.activeElement === quickSelect) ||
+				(e.key === 'Escape' && document.activeElement === quickSelect)
+			) {
+				e.preventDefault();
+				quickSelect.blur();
+			} else if (e.key === 'p' && e.metaKey) {
 				e.preventDefault();
 				quickSelect.focus();
+				anchorTarget = e.shiftKey ? '_blank' : '_self';
+				title.textContent = e.shiftKey ? textName + ' (new tab)' : textName;
 			}
 		});
 
@@ -37,23 +47,10 @@ window.addEventListener('DOMContentLoaded', function () {
 			}, 10);
 		});
 
-		// allow new tab open (we can't detect key events once the select is opened)
-		let isBlank = false;
-		document.addEventListener('keydown', function (e) {
-			isBlank = e.metaKey || e.ctrlKey;
-			title.textContent = isBlank ? `${textName} ↗` : textName;
-		});
-		document.addEventListener('keyup', function (e) {
-			if (isBlank) {
-				title.textContent = textName;
-			}
-			isBlank = false;
-		});
-
 		// follow links on click (using isTyping to prevent navigation while still typing/searching)
 		quickSelect.addEventListener('change', function () {
 			if (!isTyping) {
-				window.open(quickSelect.value, isBlank ? '_blank' : '_self');
+				window.open(quickSelect.value, anchorTarget);
 			}
 		});
 	}

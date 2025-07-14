@@ -4,7 +4,7 @@ Contributors: tcmulder
 Tags: acf, pattern library
 Requires at least: 5.8.2
 Tested up to: 6.7.2
-Stable tag: 3.0.2
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,11 @@ Creates a pattern library where one can develope features in isolation separate 
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 3.1.0 =
+
+- Allow closing select box with escape key or command/ctrl+p again.
+- Allow opening in new tab if shift+command/ctrl+p (simplifies previous behavior).
 
 = 3.0.2 =
 

@@ -2,8 +2,6 @@
  * All The Things global styling
  */
 #all-the-things {
-	--c-all-the-things: dimgray;
-
 	background-color: black;
 	bottom: 0;
 	width: 155px;
@@ -13,11 +11,20 @@
 	right: 0;
 	transition: opacity 0.3s;
 	z-index: 9999;
+	font-family: monospace;
+	color: white;
 }
 
 #all-the-things:not(:hover, :focus-within) {
 	width: auto;
 	opacity: 0.4;
+}
+
+#all-the-things div {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding-right: 2px;
 }
 
 #all-the-things :is(a, select) {
@@ -26,20 +33,20 @@
 	color: white;
 	cursor: pointer;
 	display: block;
-	font-family: monospace;
+	font-family: inherit;
 	font-size: 10px;
 	padding: 5px;
 }
 
 #all-the-things a {
 	text-decoration: underline;
-	text-decoration-color: var(--c-all-the-things);
+	text-decoration-color: dimgray;
 }
 
 #all-the-things select {
 	position: relative;
-	border-radius: 99px;
-	outline: 1px solid var(--c-all-the-things);
+	border-radius: 10px;
+	outline: 1px solid dimgray;
 	outline-offset: -5px;
 	width: 100%;
 	padding: 10px 15px;
@@ -48,6 +55,12 @@
 
 #all-the-things :is(a, select):is(:hover, :focus) {
 	--c-all-the-things: white;
+}
+
+#all-the-things input[type="checkbox"] {
+	accent-color: white;
+	width: 17px;
+	height: 17px;
 }
 
 #all-the-things:not(:hover, :focus-within) *:not(#things-link) {

@@ -251,7 +251,8 @@ function aqua_patterns_show() {
 			$the_query->the_post();
 			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
 		}
-		$select = sprintf( '<select class="all-the-things-control">%s</select>', $options );
+		$new_tab = '<input title="Open links in new tab" type="checkbox" />';
+		$select = sprintf( '<div><select aria-label="Open Pattern" class="all-the-things-control">%s</select>%s</div>', $options, $new_tab );
 	}
 	wp_reset_postdata();
 	

@@ -45,6 +45,7 @@
 <body class="things-wrap">
 	<?php query_posts( 'posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC' ); ?>
 	<?php if ( have_posts() ) : ?>
+		<?php $term_count = !! wp_count_terms( array( 'taxonomy' => 'all-the-things-thing', 'hide_empty' => true ) ); ?>
 		<ul class="things-grid">
 			<?php $items = array(); ?>
 			<?php
@@ -59,7 +60,8 @@
 					get_the_title()
 				);
 				if ( ! isset( $items[ $term ] ) ) {
-					$items[ $term ] = array( sprintf( '<li class="things-label"><h2>%s:</h2></li>', $term ) );
+					$term_title = $term_count ? sprintf( '<li class="things-label"><h2>%s:</h2></li>', $term ) : '';
+					$items[ $term ] = array( $term_title );
 				}
 				array_push( $items[ $term ], $html );
 			}

@@ -43,7 +43,10 @@ window.addEventListener("DOMContentLoaded", function () {
 			// if the key is "enter" then immediately follow the link
 			if (e.key === "Enter") {
 				if (quickSelect.value) {
-					window.location = quickSelect.value
+					window.open(
+						quickSelect.value,
+						newTab.checked ? "_blank" : "_self",
+					)
 				}
 			}
 			// if the user is still typing/searching then delay navigation

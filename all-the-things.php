@@ -251,7 +251,7 @@ function aqua_patterns_show() {
 			$the_query->the_post();
 			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
 		}
-		$new_tab = '<input title="Open links in new tab" type="checkbox" />';
+		$new_tab = '<input title="Open patterns in new tab" type="checkbox" />';
 		$select = sprintf( '<div><select aria-label="Open Pattern" class="all-the-things-control">%s</select>%s</div>', $options, $new_tab );
 	}
 	wp_reset_postdata();
@@ -265,7 +265,7 @@ function aqua_patterns_show() {
 	$link_all_the_things = sprintf( '<a href="%s" id="things-link">%s</a>', get_post_type_archive_link( 'all-the-things' ), __( 'All the Things', 'aqua-pattern-library' ) );
 
 	// create the menu itself
-	$str = sprintf( '<div id="all-the-things">%s%s%s</div>', $link_edit, $select, $link_all_the_things );
+	$str = sprintf( '<div id="all-the-things">%s<div>%s <span>|</span> %s</div></div>', $select, $link_edit, $link_all_the_things );
 
 	// send it!
 	return $str;

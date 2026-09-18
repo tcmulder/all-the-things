@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="all-the-things-archive">
 <head>
 	<!--                                                                            -->
 	<!--                         `..-:///+++++///:-..`                              -->
@@ -43,6 +43,7 @@
 	<?php wp_head(); ?>
 </head>
 <body class="things-wrap">
+	<h1>All the Things:</h1>
 	<?php query_posts( 'posts_per_page=999&post_type=all-the-things&orderby=title&order=ASC' ); ?>
 	<?php if ( have_posts() ) : ?>
 		<?php $term_count = !! wp_count_terms( array( 'taxonomy' => 'all-the-things-thing', 'hide_empty' => true ) ); ?>
@@ -60,7 +61,7 @@
 					get_the_title()
 				);
 				if ( ! isset( $items[ $term ] ) ) {
-					$term_title = $term_count ? sprintf( '<li class="things-label"><h2>%s:</h2></li>', $term ) : '';
+					$term_title = $term_count ? sprintf( '<li class="things-label"><h2>%s</h2></li>', $term ) : '';
 					$items[ $term ] = array( $term_title );
 				}
 				array_push( $items[ $term ], $html );

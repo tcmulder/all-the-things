@@ -4,7 +4,7 @@ Contributors: tcmulder
 Tags: acf, pattern library
 Requires at least: 5.8.2
 Tested up to: 6.7.2
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,11 @@ Creates a pattern library where one can develope features in isolation separate 
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 3.1.1 =
+
+- Adjust styling so headings don't risk being hidden and spacing is more consistent on archive.
+- Fix PHP warning if there are no posts.
 
 = 3.1.0 =
 
@@ -68,12 +73,12 @@ Creates a pattern library where one can develope features in isolation separate 
 
 = 1.0.2 =
 
--   Add thumbnails.
+- Add thumbnails.
 
 = 1.0.1 =
 
--   Refactor code to make adjustments easier (via constants at the top of the main plugin file).
+- Refactor code to make adjustments easier (via constants at the top of the main plugin file).
 
 = 1.0.0 =
 
--   Officially added repo for plugin (though I've been using this already for years).
+- Officially added repo for plugin (though I've been using this already for years).

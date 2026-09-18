@@ -243,6 +243,7 @@ function aqua_patterns_show() {
 	);
 
 	// if we have things
+	$select = '';
 	if ( $the_query->have_posts() ) {
 
 		// create the list of patterns
@@ -253,6 +254,8 @@ function aqua_patterns_show() {
 		}
 		$new_tab = '<input title="Open patterns in new tab" type="checkbox" />';
 		$select = sprintf( '<div><select aria-label="Open Pattern" class="all-the-things-control">%s</select>%s</div>', $options, $new_tab );
+	} else {
+		return '<p>All the Things does not have any posts</p>';
 	}
 	wp_reset_postdata();
 	

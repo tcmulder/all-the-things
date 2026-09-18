@@ -8,7 +8,16 @@ Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates a pattern library where one can develope features in isolation separate from the site's live pages.
+Creates a pattern library where one can develop features in isolation, separate from the site's live pages.
+
+Features:
+
+- Patterns: Add patterns under "Patterns" in the admin menu, and group them with the optional "Types" taxonomy.
+- Archive: Visit `/all-the-things/` to see a live thumbnail grid of every pattern, optionally grouped by type.
+- Quick‑Jump Menu: Open a menu from any page with cmd+p, type words or press up to filter, then press enter to visit the selected pattern.
+- Shortcode: Use `[thing id="123"]` or `[thing slug="post-slug"]` to output a post's content (such as a synced pattern) anywhere.
+- Template Friendly: Patterns use your theme's page templates, so they look like they do on the live site.
+- Safe by Default: Via `AQUA_PATTERNS_ALLOWED_SERVERS`, only localhost or hand-picked servers can access the patterns or see the menu.
 
 == Description ==
 

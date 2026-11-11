@@ -51,71 +51,80 @@
 	<?php wp_head(); ?>
 </head>
 <body class="things-wrap">
-	<h1>All the Things:</h1>
-	<?php
-	$things_query = new WP_Query(
-		array(
-			'posts_per_page' => 999, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Archive shows every pattern.
-			'post_type'      => 'all-the-things',
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-		)
-	);
-	?>
-	<?php if ( $things_query->have_posts() ) : ?>
+	<div class="things-inner">
+		<h1>All the Things</h1>
+		<details class="things-settings">
+			<summary><?php esc_html_e( 'Settings', 'aqua-pattern-library' ); ?></summary>
+			<label class="things-iframe-scroll">
+				<input type="checkbox" class="things-iframe-scroll__input" />
+				<?php esc_html_e( 'Enable scrolling within iframes', 'aqua-pattern-library' ); ?>
+			</label>
+		</details>
 		<?php
-		$term_count   = (bool) wp_count_terms(
+		$things_query = new WP_Query(
 			array(
-				'taxonomy'   => 'all-the-things-thing',
-				'hide_empty' => true,
+				'posts_per_page' => 999, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- Archive shows every pattern.
+				'post_type'      => 'all-the-things',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
 			)
 		);
-		$allowed_html = array(
-			'li'     => array(
-				'class' => true,
-			),
-			'a'      => array(
-				'href'  => true,
-				'class' => true,
-			),
-			'div'    => array(),
-			'iframe' => array(
-				'data-src' => true,
-				'tabindex' => true,
-			),
-			'span'   => array(),
-			'h2'     => array(),
-		);
 		?>
-		<ul class="things-grid">
-			<?php $items = array(); ?>
+		<?php if ( $things_query->have_posts() ) : ?>
 			<?php
-			while ( $things_query->have_posts() ) {
-				$things_query->the_post();
-				$terms = get_the_terms( get_the_id(), 'all-the-things-thing' );
-				$term  = ! empty( $terms[0] ) ? $terms[0]->name : __( 'Uncategorized', 'aqua-pattern-library' );
-				$html  = sprintf(
-					'<li><a href="%s" class="things-control"><div><iframe data-src="%s?iframe-things" tabindex="-1"></iframe></div><span>%s</span></a></li>',
-					esc_url( add_query_arg( 'hide-things', '', get_the_permalink() ) ),
-					esc_url( get_the_permalink() ),
-					esc_html( get_the_title() )
-				);
-				if ( ! isset( $items[ $term ] ) ) {
-					$term_title     = $term_count ? sprintf( '<li class="things-label"><h2>%s</h2></li>', esc_html( $term ) ) : '';
-					$items[ $term ] = array( $term_title );
-				}
-				array_push( $items[ $term ], $html );
-			}
-			foreach ( $items as $item ) {
-				echo wp_kses( implode( '', $item ), $allowed_html );
-			}
+			$term_count   = (bool) wp_count_terms(
+				array(
+					'taxonomy'   => 'all-the-things-thing',
+					'hide_empty' => true,
+				)
+			);
+			$allowed_html = array(
+				'li'     => array(
+					'class' => true,
+				),
+				'a'      => array(
+					'href'  => true,
+					'class' => true,
+				),
+				'div'    => array(),
+				'iframe' => array(
+					'data-src' => true,
+					'tabindex' => true,
+				),
+				'span'   => array(),
+				'h2'     => array(),
+			);
 			?>
-		</ul>
-		<?php
-	endif;
-	wp_reset_postdata();
-	?>
-<?php wp_footer(); ?>
+			<ul class="things-grid">
+				<?php $items = array(); ?>
+				<?php
+				while ( $things_query->have_posts() ) {
+					$things_query->the_post();
+					$terms = get_the_terms( get_the_id(), 'all-the-things-thing' );
+					$term  = ! empty( $terms[0] ) ? $terms[0]->name : __( 'Uncategorized', 'aqua-pattern-library' );
+					$html  = sprintf(
+						'<li><a href="%s" class="things-control"><div><iframe data-src="%s?iframe-things" tabindex="-1"></iframe></div><span>%s</span></a></li>',
+						esc_url( add_query_arg( 'hide-things', '', get_the_permalink() ) ),
+						esc_url( get_the_permalink() ),
+						esc_html( get_the_title() )
+					);
+					if ( ! isset( $items[ $term ] ) ) {
+						$term_title     = $term_count ? sprintf( '<li class="things-label"><h2>%s</h2></li>', esc_html( $term ) ) : '';
+						$items[ $term ] = array( $term_title );
+					}
+					array_push( $items[ $term ], $html );
+				}
+				foreach ( $items as $item ) {
+					echo wp_kses( implode( '', $item ), $allowed_html );
+				}
+				?>
+			</ul>
+			<?php
+		endif;
+		wp_reset_postdata();
+		?>
+	</div>
+	<?php wp_footer(); ?>
 </body>
 </html>
 

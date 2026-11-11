@@ -1,6 +1,24 @@
 /**
  * All The Things archive scripts
  */
+
+/**
+ * Persist iframe scroll setting across refreshes
+ */
+window.addEventListener('DOMContentLoaded', () => {
+	const iframeScrollKey = 'allTheThings.iframeScroll';
+	const iframeScrollInput = document.querySelector('.things-iframe-scroll__input');
+	if (iframeScrollInput) {
+		iframeScrollInput.checked = localStorage.getItem(iframeScrollKey) === 'true';
+		iframeScrollInput.addEventListener('change', () => {
+			localStorage.setItem(iframeScrollKey, iframeScrollInput.checked);
+		});
+	}
+});
+
+/**
+ * Focus quick links and lazy-load archive iframes
+ */
 window.addEventListener('load', () => {
 	// start focus on quick links
 	const quickSelect = document.querySelector('.all-the-things-control');

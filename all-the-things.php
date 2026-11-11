@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pattern Library
  * Description: Adds a basic pattern library to your WordPress site.
- * Version:     3.0.1
+ * Version:     3.0.2
  * Author:      Tomas Mulder
  * Author URI:  https://www.thinkaquamarine.com
  * License:     GPL2
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'AQUA_PATTERNS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AQUA_PATTERNS_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
-define( 'AQUA_PATTERNS_VERSION', '3.0.1' );
+define( 'AQUA_PATTERNS_VERSION', '3.0.2' );
 
 /**
  * Load includes

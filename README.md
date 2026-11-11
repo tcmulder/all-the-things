@@ -17,7 +17,7 @@ Features:
 - Quick‑Jump Menu: Open a menu from any page with cmd+p, type words or press up to filter, then press enter to visit the selected pattern.
 - Shortcode: Use `[thing id="123"]` or `[thing slug="post-slug"]` to output a post's content (such as a synced pattern) anywhere.
 - Template Friendly: Patterns use your theme's page templates, so they look like they do on the live site.
-- Safe by Default: Via `AQUA_PATTERNS_ALLOWED_SERVERS`, only localhost or hand-picked servers can access the patterns or see the menu.
+- Safe by Default: Patterns stay private until you enable public access for the current domain under Settings → Pattern Library.
 
 == Description ==
 

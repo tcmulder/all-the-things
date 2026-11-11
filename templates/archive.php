@@ -55,8 +55,8 @@
 				$terms = get_the_terms( get_the_id(), 'all-the-things-thing' );
 				$term  = $terms[0] ?? '' ? $terms[0]->name : __( 'Uncategorized', 'aqua-pattern-library' );
 				$html  = sprintf(
-					'<li><a href="%s" class="things-control"><div><iframe data-src="%s?all-the-things-thing" tabindex="-1"></iframe></div><span>%s</span></a></li>',
-					add_query_arg( 'thing', '', get_the_permalink() ),
+					'<li><a href="%s" class="things-control"><div><iframe data-src="%s?iframe-things" tabindex="-1"></iframe></div><span>%s</span></a></li>',
+					add_query_arg( 'hide-things', '', get_the_permalink() ),
 					get_the_permalink(),
 					get_the_title()
 				);

@@ -147,6 +147,17 @@ window.addEventListener( 'DOMContentLoaded', function () {
 	}
 
 	input.addEventListener( 'focus', function () {
+		// Archive (and similar) can set data-silent-focus before .focus() to
+		// land focus without opening — typing / arrows / click still open.
+		if ( input.hasAttribute( 'data-silent-focus' ) ) {
+			input.removeAttribute( 'data-silent-focus' );
+			return;
+		}
+		openList();
+		filterOptions();
+	} );
+
+	input.addEventListener( 'click', function () {
 		openList();
 		filterOptions();
 	} );

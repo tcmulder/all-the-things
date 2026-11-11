@@ -20,11 +20,16 @@ window.addEventListener('DOMContentLoaded', () => {
  * Focus quick links and lazy-load archive iframes
  */
 window.addEventListener('load', () => {
-	// start focus on quick links
+	// start focus on quick links without opening the combobox list
 	const quickSelect = document.querySelector('.all-the-things-control');
-	if (quickSelect) {
+	const focusComboboxSilently = () => {
+		if (!quickSelect) {
+			return;
+		}
+		quickSelect.setAttribute('data-silent-focus', '');
 		quickSelect.focus();
-	}
+	};
+	focusComboboxSilently();
 
 	// lazy load iframes
 	const iframes = document.querySelectorAll('iframe');
@@ -66,7 +71,7 @@ window.addEventListener('load', () => {
 				// prevent focus from occurring within this iframe (rare but annoying)
 				// @see @see https://superuser.com/questions/1776123/icloud-password-chrome-extension-sets-focus-on-first-input-during-localhost-dev
 				if (document.activeElement.tagName === 'IFRAME') {
-					quickSelect.focus();
+					focusComboboxSilently();
 				}
 			}
 		});

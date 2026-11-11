@@ -30,10 +30,18 @@ define( 'AQUA_PATTERNS_VERSION', '3.0.1' );
  * Check if localhost or other authorized server (will always show on localhost)
  */
 function aqua_patterns_is_allowed_server() {
+	$server_name = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : '';
+	$remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+
+	$local_hosts = array( 'localhost', '127.0.0.1', '::1' );
+	$local_addrs = array( '127.0.0.1', '::1' );
+
 	if (
-		in_array( $_SERVER['SERVER_NAME'], AQUA_PATTERNS_ALLOWED_SERVERS )
-		|| $_SERVER['SERVER_NAME'] === 'localhost'
-		|| $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
+		in_array( $server_name, AQUA_PATTERNS_ALLOWED_SERVERS, true )
+		|| in_array( $server_name, $local_hosts, true )
+		|| in_array( $remote_addr, $local_addrs, true )
+		|| ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() )
+		|| (bool) preg_match( '/\.(local|test|localhost)$/', $server_name )
 	) {
 		return true;
 	}
@@ -154,7 +162,7 @@ function aqua_patterns_register_scripts() {
 	}
 
 	// if we're within an archive iframe then don't show the header/footer
-	if ( is_singular( 'all-the-things' ) ) {
+	if ( is_singular( 'all-the-things' ) && isset( $_GET['thing'] ) ) {
 		wp_register_style( 'aqua-hide-all-the-things', null );
 		wp_enqueue_style( 'aqua-hide-all-the-things' );
 		wp_add_inline_style( 'aqua-hide-all-the-things', '.site-header, .site-footer, #__bs_notify__ { display: none !important; }' );
@@ -250,7 +258,7 @@ function aqua_patterns_show() {
 		$options = sprintf( '<option disabled selected>%s</option>', __( 'Patterns', 'aqua-pattern-library' ) );
 		while ( $the_query->have_posts() ) {
 			$the_query->the_post();
-			$options .= sprintf( '<option value="%s">%s</option>', get_the_permalink(), get_the_title() );
+			$options .= sprintf( '<option value="%s">%s</option>', add_query_arg( 'thing', '', get_the_permalink() ), get_the_title() );
 		}
 		$new_tab = '<input title="Open patterns in new tab" type="checkbox" />';
 		$select = sprintf( '<div><select aria-label="Open Pattern" class="all-the-things-control">%s</select>%s</div>', $options, $new_tab );

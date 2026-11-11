@@ -51,12 +51,12 @@ function aqua_patterns_show() {
 	}
 	wp_reset_postdata();
 
-	// add link to edit this page (reversed till click to bypass any browsersync or other URL rewriting).
-	$edit_url     = admin_url( '/post.php?post=' . get_the_id() . '&action=edit' );
-	$edit_url_rev = strrev( admin_url( '/post.php?post=' . get_the_id() . '&action=edit' ) );
+	// Store edit URL reversed so BrowserSync (etc.) cannot rewrite the host in the HTML source.
+	// Inline script un-reverses into href immediately so the link is a real URL for cmd+click, drag, and copy.
+	$edit_url_rev = strrev( admin_url( '/post.php?post=' . $page_id . '&action=edit' ) );
 	$link_edit    = sprintf(
-		'<a href="javascript:void(0);" onclick="window.open(\'%s\'.split(\'\').reverse().join(\'\'),\'_blank\')">✎ %s</a>',
-		esc_js( $edit_url_rev ),
+		'<a class="all-the-things-edit" data-href-rev="%1$s">✎ %2$s</a><script>(function (el) { var r = el && el.getAttribute("data-href-rev"); if (r) { el.href = r.split("").reverse().join(""); } })(document.currentScript.previousElementSibling);</script>',
+		esc_attr( $edit_url_rev ),
 		esc_html__( 'Edit', 'aqua-pattern-library' )
 	);
 

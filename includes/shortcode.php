@@ -1,6 +1,8 @@
 <?php
 /**
  * Synced pattern shortcode.
+ *
+ * @package Aqua_Pattern_Library
  */
 
 /**
@@ -11,22 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Show synced pattern by ID via a shortcode
+ * Show synced pattern by ID via a shortcode.
  *
- * Usate: [thing id="123"] // most efficient
+ * Usage: [thing id="123"] // most efficient
  *        [thing slug="my-post"] // note: could match multiple posts
+ *
+ * @param array $attr Shortcode attributes.
+ * @return string
  */
 function aqua_patterns_synced_pattern_shortcode( $attr ) {
 	$html = '';
-	extract(
-		shortcode_atts(
-			array(
-				'id'   => 0,
-				'slug' => '',
-			),
-			$attr
-		)
+	$atts = shortcode_atts(
+		array(
+			'id'   => 0,
+			'slug' => '',
+		),
+		$attr
 	);
+	$id   = $atts['id'];
+	$slug = $atts['slug'];
 	if ( $id ) {
 		$post_obj = get_post( $id );
 		if ( $post_obj ) {

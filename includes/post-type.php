@@ -1,6 +1,8 @@
 <?php
 /**
  * Register the All the Things post type and taxonomy.
+ *
+ * @package Aqua_Pattern_Library
  */
 
 /**
@@ -83,6 +85,5 @@ function aqua_patterns_create_all_the_things() {
 			),
 		)
 	);
-
 }
 add_action( 'init', 'aqua_patterns_create_all_the_things' );

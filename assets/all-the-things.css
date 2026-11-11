@@ -2,9 +2,10 @@
  * All The Things global styling
  */
 #all-the-things {
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-areas:
+		"menu menu"
+		"edit link";
 	gap: 7px;
 	bottom: 0;
 	width: 175px;
@@ -30,15 +31,7 @@
 	opacity: 0.4;
 }
 
-#all-the-things div {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 5px;
-	padding-right: 2px;
-}
-
-#all-the-things :is(a, select) {
+#all-the-things a {
 	all: initial;
 	box-sizing: border-box;
 	color: white;
@@ -47,28 +40,76 @@
 	font-family: inherit;
 	font-size: 12px;
 	white-space: nowrap;
-}
-
-#all-the-things a {
 	text-decoration: underline;
 	text-decoration-color: dimgray;
 }
 
-#all-the-things select {
-	position: relative;
-	border-radius: 10px;
-	border: 1px solid dimgray;
-	width: 100%;
-	padding: 7px 10px;
+#all-the-things .all-the-things-edit {
+	grid-area: edit;
 }
 
-#all-the-things input[type="checkbox"] {
-	accent-color: white;
-	width: 20px;
-	height: 20px;
+#all-the-things .all-the-things-link {
+	grid-area: link;
+	text-align: right;
 }
 
-#all-the-things:not(:hover, :focus-within) *:not(#things-link, div) {
-	left: -999px;
+#all-the-things:not(:hover, :focus-within) > *:not(#things-link) {
+	transform: translateX(-200vw);
 	position: absolute;
+}
+
+/**
+ * Pattern menu combobox
+ */
+.all-the-things-menu {
+	grid-area: menu;
+	position: relative;
+	width: 100%;
+
+	.all-the-things-menu__input {
+		all: initial;
+		box-sizing: border-box;
+		display: block;
+		width: 100%;
+		padding: 7px 10px;
+		border: 1px solid dimgray;
+		border-radius: 10px;
+		color: white;
+		font-family: inherit;
+		font-size: 12px;
+		cursor: text;
+	}
+
+	.all-the-things-menu__list {
+		position: absolute;
+		bottom: calc(100% + 4px);
+		left: 0;
+		right: 0;
+		z-index: 1;
+		max-height: 80vh;
+		margin: 0;
+		padding: 4px 0;
+		overflow-x: hidden;
+		overflow-y: auto;
+		list-style: none;
+		border: 1px solid dimgray;
+		border-radius: 10px;
+		background-color: black;
+	}
+
+	.all-the-things-menu__option {
+		padding: 6px 10px;
+		color: white;
+		font-family: inherit;
+		font-size: 12px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor: pointer;
+
+		&.is-active,
+		&:hover {
+			background-color: dimgray;
+		}
+	}
 }

@@ -31,21 +31,29 @@ function aqua_patterns_show() {
 	);
 
 	// if we have things.
-	$select = '';
+	$combobox = '';
 	if ( $the_query->have_posts() ) {
 
 		// create the list of patterns.
-		$options = sprintf( '<option disabled selected>%s</option>', esc_html__( 'Patterns', 'aqua-pattern-library' ) );
+		$options = '';
 		while ( $the_query->have_posts() ) {
 			$the_query->the_post();
 			$options .= sprintf(
-				'<option value="%s">%s</option>',
+				'<li role="option" class="all-the-things-menu__option" id="all-the-things-option-%1$d" data-url="%2$s" aria-selected="false">%3$s</li>',
+				get_the_ID(),
 				esc_url( add_query_arg( 'hide-things', '', get_the_permalink() ) ),
 				esc_html( get_the_title() )
 			);
 		}
-		$new_tab = '<input title="Open patterns in new tab" type="checkbox" />';
-		$select  = sprintf( '<div><select aria-label="Open Pattern" class="all-the-things-control">%s</select>%s</div>', $options, $new_tab );
+		$patterns_label = __( 'Patterns', 'aqua-pattern-library' );
+		$combobox       = sprintf(
+			'<div class="all-the-things-menu">
+				<input type="text" role="combobox" id="all-the-things-combobox" class="all-the-things-control all-the-things-menu__input" aria-label="%1$s" aria-autocomplete="list" aria-expanded="false" aria-controls="all-the-things-listbox" aria-activedescendant="" autocomplete="off" placeholder="%1$s" />
+				<ul id="all-the-things-listbox" role="listbox" class="all-the-things-menu__list" aria-label="%1$s" hidden>%2$s</ul>
+			</div>',
+			esc_attr( $patterns_label ),
+			$options
+		);
 	} else {
 		return '<p>' . esc_html__( 'All the Things does not have any posts', 'aqua-pattern-library' ) . '</p>';
 	}
@@ -62,13 +70,18 @@ function aqua_patterns_show() {
 
 	// add link to all of the things.
 	$link_all_the_things = sprintf(
-		'<a href="%s" id="things-link">%s</a>',
+		'<a href="%s" id="things-link" class="all-the-things-link">%s</a>',
 		esc_url( get_post_type_archive_link( 'all-the-things' ) ),
 		esc_html__( 'All the Things', 'aqua-pattern-library' )
 	);
 
 	// create the menu itself.
-	$str = sprintf( '<div id="all-the-things">%s<div>%s <span>|</span> %s</div></div>', $select, $link_edit, $link_all_the_things );
+	$str = sprintf(
+		'<div id="all-the-things">%s%s%s</div>',
+		$combobox,
+		$link_edit,
+		$link_all_the_things
+	);
 
 	// send it!
 	return $str;

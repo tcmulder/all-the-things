@@ -35,6 +35,6 @@ require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/settings.php';
 require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/post-type.php';
 require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/assets.php';
 require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/templates.php';
-require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/shortcode.php';
+require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/blocks.php';
 require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/menu.php';
 require_once AQUA_PATTERNS_PLUGIN_DIR . 'includes/extension-hack.php';
